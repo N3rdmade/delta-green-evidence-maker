@@ -9,3 +9,6 @@ SAVED IMAGES/
 RAW PROJECTS/
 .DS_Store
 Thumbs.db
+_site/
+test-results/
+node_modules/

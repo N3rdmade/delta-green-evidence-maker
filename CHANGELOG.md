@@ -1,5 +1,13 @@
 # Changelog
 
+## v43 — Browser edition
+
+- Added a static build that retains the v42 editor and original desktop app.
+- Replaced server storage with browser project storage, PNG downloads, and optional directory selection.
+- Added portable project backups and import of desktop RAW PROJECTS folders.
+- Added browser asset/font import, including font ZIPs, and direct Fontsource access.
+- Added automatic GitHub Pages deployment gated by browser tests.
+
 ## v42 — GitHub baseline
 
 - Imported application source and asset libraries from the v42 archive.
