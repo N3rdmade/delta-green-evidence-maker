@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+settings.json
+uploads/
+outputs/
+SAVED IMAGES/
+RAW PROJECTS/
+.DS_Store
+Thumbs.db

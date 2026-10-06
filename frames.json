@@ -1,0 +1,452 @@
+[
+  {
+    "id": "original",
+    "name": "Original",
+    "file": "01_Original.png",
+    "photo": [
+      154,
+      222,
+      972,
+      1031
+    ],
+    "labelDefault": [
+      0.5,
+      0.8809
+    ]
+  },
+  {
+    "id": "paperclip",
+    "name": "Paperclip",
+    "file": "02_Paperclip.png",
+    "photo": [
+      179,
+      294,
+      941,
+      1002
+    ],
+    "labelDefault": [
+      0.5,
+      0.8716
+    ]
+  },
+  {
+    "id": "nail",
+    "name": "Nail",
+    "file": "03_Nail.png",
+    "photo": [
+      160,
+      273,
+      962,
+      1051
+    ],
+    "labelDefault": [
+      0.5,
+      0.8873
+    ]
+  },
+  {
+    "id": "brass",
+    "name": "Brass Tack",
+    "file": "04_Brass_Tack.png",
+    "photo": [
+      148,
+      255,
+      977,
+      1037
+    ],
+    "labelDefault": [
+      0.5,
+      0.8828
+    ]
+  },
+  {
+    "id": "film",
+    "name": "Film",
+    "file": "05_Film.png",
+    "photo": [
+      165,
+      303,
+      973,
+      1084
+    ],
+    "labelDefault": [
+      0.5,
+      0.8979
+    ]
+  },
+  {
+    "id": "stamped",
+    "name": "Stamped",
+    "file": "06_Stamped.png",
+    "photo": [
+      133,
+      216,
+      992,
+      1032
+    ],
+    "labelDefault": [
+      0.5,
+      0.8812
+    ]
+  },
+  {
+    "id": "burned",
+    "name": "Burned",
+    "file": "07_Burned.png",
+    "photo": [
+      178,
+      236,
+      956,
+      1040
+    ],
+    "labelDefault": [
+      0.5,
+      0.8838
+    ]
+  },
+  {
+    "id": "folded",
+    "name": "Folded",
+    "file": "08_Folded.png",
+    "photo": [
+      176,
+      289,
+      968,
+      1066
+    ],
+    "labelDefault": [
+      0.5,
+      0.8922
+    ]
+  },
+  {
+    "id": "filecard",
+    "name": "File Card",
+    "file": "09_File_Card.png",
+    "photo": [
+      147,
+      205,
+      974,
+      1005
+    ],
+    "labelDefault": [
+      0.5,
+      0.8726
+    ]
+  },
+  {
+    "id": "tape",
+    "name": "Tape",
+    "file": "10_Tape.png",
+    "photo": [
+      155,
+      255,
+      971,
+      1075
+    ],
+    "labelDefault": [
+      0.5,
+      0.895
+    ]
+  },
+  {
+    "id": "gum",
+    "name": "Gum",
+    "file": "11_Gum.png",
+    "photo": [
+      144,
+      232,
+      980,
+      1063
+    ],
+    "labelDefault": [
+      0.5,
+      0.8912
+    ]
+  },
+  {
+    "id": "blood",
+    "name": "Blood Splatter",
+    "file": "12_Blood_Splatter.png",
+    "photo": [
+      160,
+      233,
+      964,
+      1046
+    ],
+    "labelDefault": [
+      0.5,
+      0.8857
+    ]
+  },
+  {
+    "id": "kiss",
+    "name": "Lipstick Kiss",
+    "file": "13_Lipstick_Kiss.png",
+    "photo": [
+      166,
+      173,
+      960,
+      1018
+    ],
+    "labelDefault": [
+      0.5,
+      0.8767
+    ]
+  },
+  {
+    "id": "fingerprint",
+    "name": "Fingerprint",
+    "file": "14_Fingerprint.png",
+    "photo": [
+      155,
+      164,
+      971,
+      1060
+    ],
+    "labelDefault": [
+      0.5,
+      0.8902
+    ]
+  },
+  {
+    "id": "casefile",
+    "name": "Case File",
+    "file": "15_Case_File.png",
+    "photo": [
+      186,
+      255,
+      948,
+      1135
+    ],
+    "labelDefault": [
+      0.5,
+      0.9143
+    ]
+  },
+  {
+    "id": "termite",
+    "name": "Termite Damage",
+    "file": "16_Termite_Damage.png",
+    "photo": [
+      159,
+      201,
+      966,
+      1032
+    ],
+    "labelDefault": [
+      0.5,
+      0.8812
+    ]
+  },
+  {
+    "id": "pinned",
+    "name": "Pinned Note",
+    "file": "17_Pinned_Note.png",
+    "photo": [
+      192,
+      264,
+      971,
+      1077
+    ],
+    "labelDefault": [
+      0.5,
+      0.8957
+    ]
+  },
+  {
+    "id": "tag",
+    "name": "Evidence Tag",
+    "file": "18_Evidence_Tag.png",
+    "photo": [
+      193,
+      267,
+      931,
+      1056
+    ],
+    "labelDefault": [
+      0.5,
+      0.8889
+    ]
+  },
+  {
+    "id": "modern_rainbow",
+    "name": "Modern Rainbow",
+    "file": "19_Modern_Rainbow.png",
+    "photo": [
+      143,
+      294,
+      945,
+      1102
+    ],
+    "labelDefault": [
+      0.5,
+      0.8996
+    ]
+  },
+  {
+    "id": "stapled_torn",
+    "name": "Stapled Torn",
+    "file": "20_Stapled_Torn.png",
+    "photo": [
+      145,
+      192,
+      943,
+      1086
+    ],
+    "labelDefault": [
+      0.5,
+      0.895
+    ]
+  },
+  {
+    "id": "red_dart",
+    "name": "Red Dart",
+    "file": "21_Red_Dart.png",
+    "photo": [
+      164,
+      343,
+      923,
+      1110
+    ],
+    "labelDefault": [
+      0.5,
+      0.902
+    ]
+  },
+  {
+    "id": "frozen_clip",
+    "name": "Frozen Clip",
+    "file": "22_Frozen_Clip.png",
+    "photo": [
+      163,
+      295,
+      936,
+      1104
+    ],
+    "labelDefault": [
+      0.5,
+      0.9002
+    ]
+  },
+  {
+    "id": "ooze_tooth",
+    "name": "Ooze Tooth",
+    "file": "23_Ooze_Tooth.png",
+    "photo": [
+      162,
+      266,
+      928,
+      1116
+    ],
+    "labelDefault": [
+      0.5,
+      0.9037
+    ]
+  },
+  {
+    "id": "alien_glyphs",
+    "name": "Alien Glyphs",
+    "file": "24_Alien_Glyphs.png",
+    "photo": [
+      154,
+      289,
+      964,
+      1081
+    ],
+    "labelDefault": [
+      0.5,
+      0.9038
+    ]
+  },
+  {
+    "id": "dirt_caked",
+    "name": "Dirt Caked",
+    "file": "25_Dirt_Caked.png",
+    "photo": [
+      160,
+      274,
+      938,
+      1084
+    ],
+    "labelDefault": [
+      0.5,
+      0.8944
+    ]
+  },
+  {
+    "id": "paint_spatter",
+    "name": "Paint Spatter",
+    "file": "26_Paint_Spatter.png",
+    "photo": [
+      156,
+      209,
+      938,
+      1077
+    ],
+    "labelDefault": [
+      0.5,
+      0.8924
+    ]
+  },
+  {
+    "id": "water_damaged",
+    "name": "Water Damaged",
+    "file": "27_Water_Damaged.png",
+    "photo": [
+      158,
+      240,
+      934,
+      1077
+    ],
+    "labelDefault": [
+      0.5,
+      0.8924
+    ]
+  },
+  {
+    "id": "moldy",
+    "name": "Moldy",
+    "file": "28_Moldy.png",
+    "photo": [
+      160,
+      269,
+      943,
+      1062
+    ],
+    "labelDefault": [
+      0.5,
+      0.888
+    ]
+  },
+  {
+    "id": "cracked",
+    "name": "Cracked",
+    "file": "29_Cracked.png",
+    "photo": [
+      143,
+      241,
+      947,
+      1078
+    ],
+    "labelDefault": [
+      0.5,
+      0.8927
+    ]
+  },
+  {
+    "id": "wax_drip",
+    "name": "Wax Drip",
+    "file": "30_Wax_Drip.png",
+    "photo": [
+      176,
+      260,
+      944,
+      1082
+    ],
+    "labelDefault": [
+      0.5,
+      0.8938
+    ]
+  }
+]
