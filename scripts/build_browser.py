@@ -31,7 +31,7 @@ for path in sorted((ROOT / "custom_fonts").glob("*")):
     fonts.append(dict(id=hashlib.sha1(path.name.encode()).hexdigest()[:14],
                       name=name, custom=False, themed=True,
                       url="custom_fonts/" + path.name))
-manifest = {"version": "v43", "frames": namespace["build_frame_library"](),
+manifest = {"version": "v44", "frames": namespace["build_frame_library"](),
             "stickers": namespace["build_sticker_library"](), "fonts": fonts,
             "styles": namespace["STYLE_SEEDS"], "fallbacks": namespace["STYLE_FALLBACKS"],
             "categories": namespace["DIRECT_CATEGORIES"]}
@@ -44,7 +44,7 @@ shutil.copy2(ROOT / "browser/adapter.js", OUT / "adapter.js")
 (OUT / ".nojekyll").touch()
 
 html = (ROOT / "index.html").read_text()
-html = html.replace("<script>", '<script src="adapter.js?v=43"></script>\n<script>', 1)
+html = html.replace("<script>", '<script src="adapter.js?v=44"></script>\n<script>', 1)
 html = html.replace('src="/asset/logo_app.png"', 'src="logo_app.png"')
 html = html.replace("fetch('/", "BrowserApp.api('/")
 html = html.replace("return '/frame/'+String(file||'').split('/').map(part=>encodeURIComponent(part)).join('/');",
@@ -59,8 +59,12 @@ html = html.replace("+'?v='+Date.now()", "")
 html = html.replace("async function init(){try{", "async function init(){try{await BrowserApp.ready;")
 html = html.replace("async function importProjectState(data){",
                     "async function importProjectState(data){ await BrowserApp.restoreResources(data); fonts=await (await BrowserApp.api('/fonts')).json(); await loadStickers();")
+# Ensure browser-saved editable projects contain the same portable resources as backups.
 html = html.replace("let projectState=await exportProjectState();",
                     "let projectState=await BrowserApp.packProject(await exportProjectState());")
+# Reopening always uses the browser adapter, including the project identifier route.
+html = html.replace("await fetch('/project-data/'+encodeURIComponent(projectId))",
+                    "await BrowserApp.api('/project-data/'+encodeURIComponent(projectId))")
 html = html.replace("onclick=\"openProjectsFolder()\"", "onclick=\"BrowserApp.importProjectFiles()\"")
 html = html.replace("Open RAW PROJECTS Folder", "Import Project")
 html = html.replace("onclick=\"openOutput()\"", "onclick=\"BrowserApp.exportProjectFile()\"")
@@ -82,7 +86,7 @@ html = html.replace('id="savePath" class="saveBox" readonly', 'id="savePath" cla
 html = re.sub(r'<div class="projectHint">.*?</div>',
               '<div class="projectHint">Editable projects stay in this browser on this device. Use <b>Export Project</b> for a portable backup. Clearing site data removes browser saves.</div>', html, count=1)
 html = html.replace('<b>RAW PROJECTS</b>', '<b>this browser</b>')
-html = html.replace('Perfect for DELTA GREEN and other investigative games', 'v43 • Browser edition • Projects stay on this device')
+html = html.replace('Perfect for DELTA GREEN and other investigative games', 'v44 • Browser edition • Projects stay on this device')
 html = html.replace('</body>', '<script>BrowserApp.installUI();</script></body>')
 (OUT / "index.html").write_text(html, encoding="utf-8")
 print(f"Built {OUT}: {len(manifest['frames']['frames'])} frames, {len(manifest['stickers']['stickers'])} stickers")
