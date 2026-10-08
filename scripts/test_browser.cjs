@@ -47,7 +47,14 @@ const assert = require('assert');
  await page.waitForFunction(()=>document.getElementById('status').textContent==='Ready');
  await page.locator('#projectsTopBtn').click();
  await page.locator('.projectCard').click();
- await page.waitForFunction(()=>{const s=document.getElementById('status').textContent;return s.startsWith('Project loaded:')||s.startsWith('ERROR:');});
+ console.log('REOPEN clicked', await page.evaluate(() => ({status:document.getElementById('status').textContent, projectsOpen:projectsPopoverOpen, count:document.querySelectorAll('.projectCard').length})));
+ try {
+ await page.waitForFunction(()=>{const s=document.getElementById('status').textContent;return s.startsWith('Project loaded:')||s.startsWith('ERROR:');},{timeout:12000});
+ } catch(e) {
+ console.error('REOPEN DIAGNOSTICS', JSON.stringify(await page.evaluate(async()=>({status:document.getElementById('status').textContent,subjectComplete:subject.complete,subjectWidth:subject.naturalWidth,imageLoaded,project:await (await BrowserApp.api('/project-data/BROWSER%20TEST')).json(),resourcesReady:true}))).slice(0,800));
+ console.error('BROWSER ERRORS',errors,'FAILED RESPONSES',failed);
+ throw e;
+ }
  assert((await page.locator('#status').textContent()).startsWith('Project loaded:'), 'Saved project reopen failed: '+await page.locator('#status').textContent());
  assert.strictEqual(await page.locator('#label').inputValue(),'BROWSER TEST');
  assert.strictEqual(await page.evaluate(()=>bgBoxShape),'circle');
