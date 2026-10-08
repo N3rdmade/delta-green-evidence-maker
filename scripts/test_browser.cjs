@@ -51,7 +51,7 @@ const assert = require('assert');
  try {
  await page.waitForFunction(()=>{const s=document.getElementById('status').textContent;return s.startsWith('Project loaded:')||s.startsWith('ERROR:');},{timeout:12000});
  } catch(e) {
- console.error('REOPEN DIAGNOSTICS', JSON.stringify(await page.evaluate(async()=>({status:document.getElementById('status').textContent,subjectComplete:subject.complete,subjectWidth:subject.naturalWidth,imageLoaded,project:await (await BrowserApp.api('/project-data/BROWSER%20TEST')).json(),resourcesReady:true}))).slice(0,800));
+ console.error('REOPEN DIAGNOSTICS', JSON.stringify(await page.evaluate(async()=>({status:document.getElementById('status').textContent,projectsOpen:projectsPopoverOpen,subjectComplete:subject.complete,subjectWidth:subject.naturalWidth,imageLoaded,label:document.getElementById('label').value,stickers:stickerInstances.length,resourcesReady:true}))).slice(0,800));
  console.error('BROWSER ERRORS',errors,'FAILED RESPONSES',failed);
  throw e;
  }
