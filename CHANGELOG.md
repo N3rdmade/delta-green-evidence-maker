@@ -1,3 +1,10 @@
+## v44 — Project reopen regression fix
+
+- Save portable project resources with browser project records, not only downloaded backups.
+- Route reopening through the browser adapter explicitly.
+- Fail browser smoke tests immediately with the reported project error instead of a silent timeout.
+- Keep the v42 desktop editor unchanged.
+
 # Changelog
 
 ## v43 — Browser edition
