@@ -57,7 +57,7 @@ const assert = require('assert');
  assert((await page.locator('#status').textContent()).startsWith('Project loaded:'), 'Saved project reopen failed: '+await page.locator('#status').textContent());
  assert.strictEqual(await page.locator('#label').inputValue(),'BROWSER TEST');
  assert.strictEqual(await page.evaluate(()=>bgBoxShape),'circle');
- assert.strictEqual(await page.evaluate(()=>bgBoxRot),17);
+ assert.strictEqual(await page.evaluate(()=>bgBoxRot),project.bgBoxRot, 'Project rotation must match the exported project state');
  await page.waitForFunction(()=>stickerInstances[0]?.loaded);
  // Save conflict and versioning.
  await page.locator('#saveTopBtn').click();
