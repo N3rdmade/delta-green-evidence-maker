@@ -100,6 +100,12 @@ html = re.sub(r'<div class="projectHint">.*?</div>',
               '<div class="projectHint">Editable projects stay in this browser on this device. Use <b>Export Project</b> for a portable backup. Clearing site data removes browser saves.</div>', html, count=1)
 html = html.replace('<b>RAW PROJECTS</b>', '<b>this browser</b>')
 html = html.replace('Perfect for DELTA GREEN and other investigative games', 'v127 • Browser edition • Projects stay on this device')
+# v127's cut rebuild can complete synchronously when a sticker has no cuts.
+# Two sticker-load callbacks incorrectly assumed the return was always a Promise.
+html = html.replace("rebuildCutAssetsForTarget({kind:'sticker',index:i,node:st.node,st}).then(",
+                    "Promise.resolve(rebuildCutAssetsForTarget({kind:'sticker',index:i,node:st.node,st})).then(")
+html = html.replace("rebuildCutAssetsForTarget({kind:'sticker',index:stickerInstances.indexOf(st),node:st.node,st}).then(",
+                    "Promise.resolve(rebuildCutAssetsForTarget({kind:'sticker',index:stickerInstances.indexOf(st),node:st.node,st})).then(")
 html = html.replace('</body>', '<script>BrowserApp.installUI();</script></body>')
 (OUT / "index.html").write_text(html, encoding="utf-8")
 print(f"Built {OUT}: {len(manifest['frames']['frames'])} frames, {len(manifest['stickers']['stickers'])} stickers")
