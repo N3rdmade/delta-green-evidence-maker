@@ -1,4 +1,4 @@
-"""Build a static browser edition from the unchanged v42 editor and asset library."""
+"""Build a static browser edition from the recovered v127 editor and existing asset library."""
 import ast
 import hashlib
 import json
@@ -31,7 +31,7 @@ for path in sorted((ROOT / "custom_fonts").glob("*")):
     fonts.append(dict(id=hashlib.sha1(path.name.encode()).hexdigest()[:14],
                       name=name, custom=False, themed=True,
                       url="custom_fonts/" + path.name))
-manifest = {"version": "v46", "frames": namespace["build_frame_library"](),
+manifest = {"version": "v127-browser", "frames": namespace["build_frame_library"](),
             "stickers": namespace["build_sticker_library"](), "fonts": fonts,
             "styles": namespace["STYLE_SEEDS"], "fallbacks": namespace["STYLE_FALLBACKS"],
             "categories": namespace["DIRECT_CATEGORIES"]}
@@ -43,8 +43,8 @@ shutil.copy2(ROOT / "browser/adapter.js", OUT / "adapter.js")
 (OUT / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False), encoding="utf-8")
 (OUT / ".nojekyll").touch()
 
-html = (ROOT / "index.html").read_text()
-html = html.replace("<script>", '<script src="adapter.js?v=46"></script>\n<script>', 1)
+html = (ROOT / "migration/v127/index.html").read_text()
+html = html.replace("<script>", '<script src="adapter.js?v=127"></script>\n<script>', 1)
 html = html.replace('src="/asset/logo_app.png"', 'src="logo_app.png"')
 html = html.replace("fetch('/", "BrowserApp.api('/")
 html = html.replace("return '/frame/'+String(file||'').split('/').map(part=>encodeURIComponent(part)).join('/');",
@@ -61,6 +61,15 @@ html = html.replace("async function importProjectState(data){",
                     "async function importProjectState(data){ await BrowserApp.restoreResources(data); fonts=await (await BrowserApp.api('/fonts')).json(); await loadStickers();")
 # Restoring a project must not asynchronously overwrite its completion status.
 # The saved preview mode belongs to the project, not global browser settings.
+# v127's desktop project-sharing UI uses an EMX server endpoint. Reuse portable
+# browser backups rather than directing a static-site visitor to a dead endpoint.
+html = html.replace('onclick="chooseSharedProjectImport()"', 'onclick="BrowserApp.importProjectFiles()"')
+html = html.replace('onclick="exportSharedProject()"', 'onclick="BrowserApp.exportProjectFile()"')
+html = html.replace('accept=".emx,.zip,.json"', 'accept=".json"')
+# Browser merge results use safe local data URLs rather than server cache paths.
+html = html.replace("src:j.url+'?v='+Date.now()", "src:j.url")
+# v127 must restore the project's preview background without changing global
+# preferences asynchronously after the project has loaded.
 html = html.replace("if(data.previewBackground)chooseBgMode(data.previewBackground);",
                     "if(data.previewBackground)setBg(data.previewBackground);")
 # Ensure browser-saved editable projects contain the same portable resources as backups.
@@ -90,7 +99,7 @@ html = html.replace('id="savePath" class="saveBox" readonly', 'id="savePath" cla
 html = re.sub(r'<div class="projectHint">.*?</div>',
               '<div class="projectHint">Editable projects stay in this browser on this device. Use <b>Export Project</b> for a portable backup. Clearing site data removes browser saves.</div>', html, count=1)
 html = html.replace('<b>RAW PROJECTS</b>', '<b>this browser</b>')
-html = html.replace('Perfect for DELTA GREEN and other investigative games', 'v46 • Browser edition • Projects stay on this device')
+html = html.replace('Perfect for DELTA GREEN and other investigative games', 'v127 • Browser edition • Projects stay on this device')
 html = html.replace('</body>', '<script>BrowserApp.installUI();</script></body>')
 (OUT / "index.html").write_text(html, encoding="utf-8")
 print(f"Built {OUT}: {len(manifest['frames']['frames'])} frames, {len(manifest['stickers']['stickers'])} stickers")
