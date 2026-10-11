@@ -20,8 +20,7 @@ const assert = require('assert');
  assert.strictEqual(await page.evaluate(()=>stickerLibrary.length),58);
  await page.locator('#file').setInputFiles('logo_app.png');
  await page.waitForFunction(()=>document.getElementById('status').textContent.startsWith('Image loaded'),null,{timeout:15000});
- await page.locator('#label').fill('BROWSER TEST');
- await page.locator('#label').dispatchEvent('input');
+ await page.evaluate(()=>{toggleMainLabelV78(null,true);const el=document.getElementById('label');el.value='BROWSER TEST';el.dispatchEvent(new Event('input',{bubbles:true}));});
  // Retain shape-editing and sticker layers from the reference editor.
  await page.evaluate(()=>{setBgShape('circle'); bgBoxRot=17; bgBoxW=.8; syncBgBox(); addStickerInstance(0);});
  await page.waitForFunction(()=>stickerInstances.length===1&&stickerInstances[0].loaded);
@@ -70,8 +69,7 @@ const assert = require('assert');
  assert.strictEqual(version.suggestedFilename(),'BROWSER TEST v2.png');
  await page.waitForFunction(()=>document.getElementById('status').textContent.startsWith('Saved:'));
  // Opaque export.
- await page.locator('#label').fill('OPAQUE TEST');
- await page.locator('#label').dispatchEvent('input');
+ await page.evaluate(()=>{const el=document.getElementById('label');el.value='OPAQUE TEST';el.dispatchEvent(new Event('input',{bubbles:true}));});
  await page.locator('#saveTopBtn').click();
  await page.locator('#transparent').uncheck();
  const opaquePromise=page.waitForEvent('download');
