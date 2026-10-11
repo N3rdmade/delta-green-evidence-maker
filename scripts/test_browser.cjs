@@ -22,7 +22,7 @@ const assert = require('assert');
  await page.waitForFunction(()=>document.getElementById('status').textContent.startsWith('Image loaded'),null,{timeout:15000});
  await page.evaluate(()=>{toggleMainLabelV78(null,true);const el=document.getElementById('label');el.value='BROWSER TEST';el.dispatchEvent(new Event('input',{bubbles:true}));});
  // Retain shape-editing and sticker layers from the reference editor.
- await page.evaluate(()=>{setBgShape('circle'); bgBoxRot=17; bgBoxW=.8; syncBgBox(); addStickerInstance(0);});
+ await page.evaluate(()=>{setBgShape('circle'); if(bgBoxAutoFitEnabled)toggleBgAutoFit(); bgBoxRot=17; bgBoxW=.8; syncBgBox(); addStickerInstance(0);});
  await page.waitForFunction(()=>stickerInstances.length===1&&stickerInstances[0].loaded);
  await page.locator('#saveTopBtn').click();
  const pngPromise=page.waitForEvent('download');
