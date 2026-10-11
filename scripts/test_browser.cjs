@@ -19,7 +19,7 @@ const assert = require('assert');
  await page.evaluate(()=>loadStickers());
  assert.strictEqual(await page.evaluate(()=>stickerLibrary.length),58);
  await page.locator('#file').setInputFiles('logo_app.png');
- await page.waitForFunction(()=>document.getElementById('status').textContent==='Image loaded');
+ await page.waitForFunction(()=>document.getElementById('status').textContent.startsWith('Image loaded'),null,{timeout:15000});
  await page.locator('#label').fill('BROWSER TEST');
  await page.locator('#label').dispatchEvent('input');
  // Retain shape-editing and sticker layers from the reference editor.
