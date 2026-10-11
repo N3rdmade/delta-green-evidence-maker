@@ -32,10 +32,10 @@ window.BrowserApp = (() => {
     canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('PNG export failed.')), 'image/png'));
   function openDatabase() {
     return new Promise((resolve, reject) => {
-      const request = indexedDB.open('delta-green-evidence-maker', 1);
+      const request = indexedDB.open('delta-green-evidence-maker', 2);
       request.onupgradeneeded = () => {
-        for (const name of ['projects', 'fonts', 'assets', 'settings', 'exports']) {
-          request.result.createObjectStore(name, {keyPath: 'id'});
+        for (const name of ['projects', 'fonts', 'assets', 'settings', 'exports', 'merge-cache']) {
+          if (!request.result.objectStoreNames.contains(name)) request.result.createObjectStore(name, {keyPath: 'id'});
         }
       };
       request.onsuccess = () => resolve(request.result);
@@ -164,7 +164,7 @@ window.BrowserApp = (() => {
       project.projectName = stem;
       project.savedPngName = filename;
       project.savedAt = new Date().toISOString();
-      project.savedWith = 'Evidence Maker v43 Browser';
+      project.savedWith = 'Evidence Maker v127 Browser';
       await write('projects', {id:stem, project, thumbnail:thumb.toDataURL('image/png')});
     }
     if (outputDirectory) {
@@ -211,7 +211,7 @@ window.BrowserApp = (() => {
     const frame = assets.frames.find(item => item.id === project.frameId);
     const stickerFiles = new Set((project.stickers || []).map(item => item.file));
     project.browserAssets = [...(frame ? [frame] : []), ...assets.stickers.filter(item => stickerFiles.has(item.file))];
-    project.savedWith = 'Evidence Maker v43 Browser';
+    project.savedWith = 'Evidence Maker v127 Browser';
     return project;
   }
   async function restoreResources(project) {
@@ -300,6 +300,24 @@ window.BrowserApp = (() => {
       await ready;
       const url=new URL(path,'https://local.invalid');
       const route=url.pathname, body=options.body;
+      // v127 merges image layers in the editor. Keep their PNGs local to the
+      // browser instead of depending on the desktop-only Python cache server.
+      if(route==='/merge-cache-info') return respond({ok:true,count:(await read('merge-cache')).length,bytes:0});
+      if(route==='/clear-merge-cache') {
+        const saved=await read('merge-cache');
+        const tx=db.transaction('merge-cache','readwrite');
+        tx.objectStore('merge-cache').clear();
+        await new Promise((resolve,reject)=>{tx.oncomplete=resolve;tx.onerror=reject;});
+        return respond({ok:true,count:saved.length,bytes:0});
+      }
+      if(route==='/merge-cache') {
+        const blob=body?.get('file');
+        if(!(blob instanceof Blob)) throw new Error('No merged image was provided.');
+        const dataUrl=await readData(blob);
+        const cacheRef='merged_'+crypto.randomUUID();
+        await write('merge-cache',{id:cacheRef,src:dataUrl});
+        return respond({ok:true,url:dataUrl,cache_ref:cacheRef,filename:cacheRef+'.png'});
+      }
       if(route==='/frames') return respond(library('frames'));
       if(route==='/stickers') return respond(library('stickers'));
       if(route==='/fonts' || route==='/fonts/refresh') {await reloadResources();return respond(fontList);}
