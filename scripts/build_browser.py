@@ -31,7 +31,29 @@ for path in sorted((ROOT / "custom_fonts").glob("*")):
     fonts.append(dict(id=hashlib.sha1(path.name.encode()).hexdigest()[:14],
                       name=name, custom=False, themed=True,
                       url="custom_fonts/" + path.name))
-manifest = {"version": "v129.1-browser", "frames": namespace["build_frame_library"](),
+# Existing root-level frames receive virtual browse categories without changing
+# paths or IDs in previously saved projects. Real frame subfolders are already
+# discovered recursively by build_frame_library().
+ROOT_FRAME_CATEGORIES = {
+    "Polaroids": {"Original", "Film", "Modern Rainbow"},
+    "Photo Frames": {"Brass Tack", "Nail", "Tape", "Gum", "Red Dart"},
+    "Notes & Journals": {"Paperclip", "Folded", "Pinned Note", "Stapled Torn", "File Card"},
+    "Evidence Files": {"Stamped", "Fingerprint", "Case File", "Evidence Tag"},
+    "Damaged & Weathered": {"Burned", "Termite Damage", "Frozen Clip", "Ooze Tooth", "Dirt Caked", "Paint Spatter", "Water Damaged", "Moldy", "Cracked", "Wax Drip", "Blood Splatter", "Lipstick Kiss", "Alien Glyphs"},
+}
+FRAME_CATEGORY_ORDER = ["Polaroids", "Photo Frames", "Newspaper", "Notes & Journals", "Leather", "Evidence Files", "Damaged & Weathered"]
+frame_library = namespace["build_frame_library"]()
+for frame in frame_library["frames"]:
+    if frame.get("category"):
+        continue
+    frame["category"] = next((category for category, names in ROOT_FRAME_CATEGORIES.items() if frame["name"] in names), "Photo Frames")
+found = {entry["name"]: entry for entry in frame_library["categories"]}
+for category in FRAME_CATEGORY_ORDER:
+    if any(f["category"] == category for f in frame_library["frames"]):
+        found.setdefault(category, {"name": category, "subcategories": []})
+frame_library["categories"] = sorted(found.values(), key=lambda item: (FRAME_CATEGORY_ORDER.index(item["name"]) if item["name"] in FRAME_CATEGORY_ORDER else len(FRAME_CATEGORY_ORDER), item["name"].lower()))
+
+manifest = {"version": "v130.2-browser", "frames": frame_library,
             "stickers": namespace["build_sticker_library"](), "fonts": fonts,
             "styles": namespace["STYLE_SEEDS"], "fallbacks": namespace["STYLE_FALLBACKS"],
             "categories": namespace["DIRECT_CATEGORIES"]}
@@ -44,7 +66,7 @@ shutil.copy2(ROOT / "browser/adapter.js", OUT / "adapter.js")
 (OUT / ".nojekyll").touch()
 
 html = (ROOT / "migration/v127/index.html").read_text()
-html = html.replace("<script>", '<script src="adapter.js?v=130.1"></script>\n<script>', 1)
+html = html.replace("<script>", '<script src="adapter.js?v=130.2"></script>\n<script>', 1)
 html = html.replace('src="/asset/logo_app.png"', 'src="logo_app.png"')
 html = html.replace("fetch('/", "BrowserApp.api('/")
 html = html.replace("return '/frame/'+String(file||'').split('/').map(part=>encodeURIComponent(part)).join('/');",
