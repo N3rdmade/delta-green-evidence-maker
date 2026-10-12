@@ -162,10 +162,10 @@ html = html.replace("if(t.kind!=='subject' && sourceLevel>=110 && imageLoaded &&
 # Edits/cuts to the current frame (and picker previews) never change its fit.
 html = html.replace("let imagePlacementFrameBounds=null;let pendingMainLabelSpawnV83=false;",
     "let imagePlacementFrameBounds=null, pendingPhotoRefitFrameId=null;let pendingMainLabelSpawnV83=false;")
-html = html.replace("  currentFrame=frameList.find(f=>f.id===id)||frameList[0];\\n  if(!initial || fromClick)frameSelectionConfirmed=true;",
-    "  let nextFrame=frameList.find(f=>f.id===id)||frameList[0];\\n  if(!initial && imageLoaded && currentFrame && currentFrame.id!==nextFrame.id)pendingPhotoRefitFrameId=nextFrame.id;\\n  currentFrame=nextFrame;\\n  if(!initial || fromClick)frameSelectionConfirmed=true;")
-html = html.replace("    layout(initial);\\n    if(typeof syncImageEditToolButtons==='function')",
-    "    if(pendingPhotoRefitFrameId===frame.id && frame===currentFrame){\\n      pendingPhotoRefitFrameId=null;\\n      if(imageLoaded && imageBoxScope==='photo')captureMainImagePlacement();\\n    }\\n    layout(initial);\\n    if(typeof syncImageEditToolButtons==='function')")
+html = html.replace("  currentFrame=frameList.find(f=>f.id===id)||frameList[0];\n  if(!initial || fromClick)frameSelectionConfirmed=true;",
+    "  let nextFrame=frameList.find(f=>f.id===id)||frameList[0];\n  if(!initial && imageLoaded && currentFrame && currentFrame.id!==nextFrame.id)pendingPhotoRefitFrameId=nextFrame.id;\n  currentFrame=nextFrame;\n  if(!initial || fromClick)frameSelectionConfirmed=true;")
+html = html.replace("    layout(initial);\n    if(typeof syncImageEditToolButtons==='function')",
+    "    if(pendingPhotoRefitFrameId===frame.id && frame===currentFrame){\n      pendingPhotoRefitFrameId=null;\n      if(imageLoaded && imageBoxScope==='photo')captureMainImagePlacement();\n    }\n    layout(initial);\n    if(typeof syncImageEditToolButtons==='function')")
 html = html.replace('</body>', '<script>BrowserApp.installUI();</script></body>')
 (OUT / "index.html").write_text(html, encoding="utf-8")
 print(f"Built {OUT}: {len(manifest['frames']['frames'])} frames, {len(manifest['stickers']['stickers'])} stickers")
