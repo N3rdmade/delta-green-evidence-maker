@@ -22,6 +22,22 @@ const assert = require('assert');
  await page.waitForFunction(()=>document.getElementById('status').textContent.startsWith('Image loaded'),null,{timeout:15000});
  await page.waitForFunction(()=>mainLabelEnabledV78 && mainLabelExistsV77 && namePreview.style.display!=='none');
  await page.evaluate(()=>{toggleMainLabelV78(null,true);const el=document.getElementById('label');el.value='BROWSER TEST';el.dispatchEvent(new Event('input',{bubbles:true}));});
+ // v130: frame aperture edits must not resize an already placed image.
+ assert.strictEqual(await page.locator('#cutScopeMainImageV90').count(),1);
+ assert.strictEqual(await page.locator('#eraserScopeMainImageV90').count(),1);
+ const photoWindowStable=await page.evaluate(()=>{
+   const before=getStoredMainImagePlacementRect();
+   const saved=currentFrame.photo.slice();
+   currentFrame.photo=[saved[0]+12,saved[1]+8,saved[2]-18,saved[3]-11];
+   const after=getStoredMainImagePlacementRect();
+   currentFrame.photo=saved;
+   setPunchScopeV90('mainImage');
+   const enabled=punchScopeV90==='mainImage'&&document.getElementById('cutScopeMainImageV90').classList.contains('active');
+   setPunchScopeV90('current');
+   return {before,after,enabled};
+ });
+ assert.deepStrictEqual(photoWindowStable.after,photoWindowStable.before);
+ assert.strictEqual(photoWindowStable.enabled,true);
  // Retain shape-editing and sticker layers from the reference editor.
  await page.evaluate(()=>{setBgShape('circle'); if(bgBoxAutoFitEnabled)toggleBgAutoFit(); bgBoxRot=17; bgBoxW=.8; syncBgBox(); addStickerInstance(0);});
  await page.waitForFunction(()=>stickerInstances.length===1&&stickerInstances[0].loaded);
