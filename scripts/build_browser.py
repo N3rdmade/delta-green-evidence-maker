@@ -44,7 +44,7 @@ shutil.copy2(ROOT / "browser/adapter.js", OUT / "adapter.js")
 (OUT / ".nojekyll").touch()
 
 html = (ROOT / "migration/v127/index.html").read_text()
-html = html.replace("<script>", '<script src="adapter.js?v=129.1"></script>\n<script>', 1)
+html = html.replace("<script>", '<script src="adapter.js?v=129.2"></script>\n<script>', 1)
 html = html.replace('src="/asset/logo_app.png"', 'src="logo_app.png"')
 html = html.replace("fetch('/", "BrowserApp.api('/")
 html = html.replace("return '/frame/'+String(file||'').split('/').map(part=>encodeURIComponent(part)).join('/');",
@@ -99,13 +99,22 @@ html = html.replace('id="savePath" class="saveBox" readonly', 'id="savePath" cla
 html = re.sub(r'<div class="projectHint">.*?</div>',
               '<div class="projectHint">Editable projects stay in this browser on this device. Use <b>Export Project</b> for a portable backup. Clearing site data removes browser saves.</div>', html, count=1)
 html = html.replace('<b>RAW PROJECTS</b>', '<b>this browser</b>')
-html = html.replace('Perfect for DELTA GREEN and other investigative games', 'v129 • Browser edition • Projects stay on this device')
+html = html.replace('Perfect for DELTA GREEN and other investigative games', 'v129.2 • Browser edition • Projects stay on this device')
 # v127's cut rebuild can complete synchronously when a sticker has no cuts.
 # Two sticker-load callbacks incorrectly assumed the return was always a Promise.
 html = html.replace("rebuildCutAssetsForTarget({kind:'sticker',index:i,node:st.node,st}).then(",
                     "Promise.resolve(rebuildCutAssetsForTarget({kind:'sticker',index:i,node:st.node,st})).then(")
 html = html.replace("rebuildCutAssetsForTarget({kind:'sticker',index:stickerInstances.indexOf(st),node:st.node,st}).then(",
                     "Promise.resolve(rebuildCutAssetsForTarget({kind:'sticker',index:stickerInstances.indexOf(st),node:st.node,st})).then(")
+# Main Label should appear immediately when enabled and an image finishes loading.
+# The desktop v83 first-spawn delay left the toggle ON while hiding the label.
+html = html.replace(
+    "pendingMainLabelSpawnV83=!!mainLabelEnabledV78 && !hadMainLabel;mainLabelExistsV77=hadMainLabel;",
+    "pendingMainLabelSpawnV83=false;mainLabelExistsV77=!!mainLabelEnabledV78;")
+# Imported projects retain explicit layer visibility; defaults shouldn't hide ON labels.
+html = html.replace(
+    "namePreview.style.display=mainLabelExistsV77?'block':'none';if(mainLabelExistsV77)syncLabel();",
+    "namePreview.style.display=(mainLabelEnabledV78 && mainLabelExistsV77)?'block':'none';if(mainLabelEnabledV78 && mainLabelExistsV77)syncLabel();")
 html = html.replace('</body>', '<script>BrowserApp.installUI();</script></body>')
 (OUT / "index.html").write_text(html, encoding="utf-8")
 print(f"Built {OUT}: {len(manifest['frames']['frames'])} frames, {len(manifest['stickers']['stickers'])} stickers")
