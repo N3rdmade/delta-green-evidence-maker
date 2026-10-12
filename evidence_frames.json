@@ -1,0 +1,317 @@
+[
+  {
+    "id": "evidence-taped-notebook-photo",
+    "name": "Taped Notebook Photo",
+    "file": "Notes & Journals/Taped_Notebook_Photo.png",
+    "photo": [
+      483,
+      231,
+      982,
+      765
+    ],
+    "labelDefault": [
+      0.5,
+      0.9
+    ]
+  },
+  {
+    "id": "evidence-torn-newspaper-clipping",
+    "name": "Torn Newspaper Clipping",
+    "file": "Newspaper/Torn_Newspaper_Clipping.png",
+    "photo": [
+      536,
+      252,
+      1024,
+      812
+    ],
+    "labelDefault": [
+      0.5,
+      0.9
+    ]
+  },
+  {
+    "id": "evidence-double-polaroid-collage",
+    "name": "Double Polaroid Collage",
+    "file": "Polaroids/Double_Polaroid_Collage.png",
+    "photo": [
+      482,
+      459,
+      1027,
+      1027
+    ],
+    "labelDefault": [
+      0.5,
+      0.9
+    ]
+  },
+  {
+    "id": "evidence-leather-evidence-folder",
+    "name": "Leather Evidence Folder",
+    "file": "Leather/Leather_Evidence_Folder.png",
+    "photo": [
+      399,
+      274,
+      904,
+      871
+    ],
+    "labelDefault": [
+      0.5,
+      0.9
+    ]
+  },
+  {
+    "id": "evidence-sepia-mount",
+    "name": "Sepia Mount",
+    "file": "Photo Frames/Sepia_Mount.png",
+    "photo": [
+      238,
+      266,
+      897,
+      1014
+    ],
+    "labelDefault": [
+      0.5,
+      0.9
+    ]
+  },
+  {
+    "id": "evidence-police-evidence-sheet",
+    "name": "Police Evidence Sheet",
+    "file": "Evidence Files/Police_Evidence_Sheet.png",
+    "photo": [
+      564,
+      266,
+      1023,
+      808
+    ],
+    "labelDefault": [
+      0.5,
+      0.9
+    ]
+  },
+  {
+    "id": "evidence-pinned-notebook-photo",
+    "name": "Pinned Notebook Photo",
+    "file": "Notes & Journals/Pinned_Notebook_Photo.png",
+    "photo": [
+      396,
+      242,
+      989,
+      808
+    ],
+    "labelDefault": [
+      0.5,
+      0.9
+    ]
+  },
+  {
+    "id": "evidence-ornate-antique-frame",
+    "name": "Ornate Antique Frame",
+    "file": "Photo Frames/Ornate_Antique_Frame.png",
+    "photo": [
+      388,
+      243,
+      943,
+      1008
+    ],
+    "labelDefault": [
+      0.5,
+      0.9
+    ]
+  },
+  {
+    "id": "evidence-newspaper-polaroid-collage",
+    "name": "Newspaper Polaroid Collage",
+    "file": "Newspaper/Newspaper_Polaroid_Collage.png",
+    "photo": [
+      518,
+      271,
+      1025,
+      822
+    ],
+    "labelDefault": [
+      0.5,
+      0.9
+    ]
+  },
+  {
+    "id": "evidence-archival-photo-envelope",
+    "name": "Archival Photo Envelope",
+    "file": "Evidence Files/Archival_Photo_Envelope.png",
+    "photo": [
+      432,
+      267,
+      986,
+      848
+    ],
+    "labelDefault": [
+      0.5,
+      0.9
+    ]
+  },
+  {
+    "id": "evidence-paperclip-notebook-photo",
+    "name": "Paperclip Notebook Photo",
+    "file": "Notes & Journals/Paperclip_Notebook_Photo.png",
+    "photo": [
+      584,
+      158,
+      1038,
+      649
+    ],
+    "labelDefault": [
+      0.5,
+      0.9
+    ]
+  },
+  {
+    "id": "evidence-detective-newspaper-spread",
+    "name": "Detective Newspaper Spread",
+    "file": "Newspaper/Detective_Newspaper_Spread.png",
+    "photo": [
+      392,
+      328,
+      839,
+      944
+    ],
+    "labelDefault": [
+      0.5,
+      0.9
+    ]
+  },
+  {
+    "id": "evidence-taped-double-instant-photos",
+    "name": "Taped Double Instant Photos",
+    "file": "Polaroids/Taped_Double_Instant_Photos.png",
+    "photo": [
+      90,
+      117,
+      673,
+      742
+    ],
+    "labelDefault": [
+      0.5,
+      0.9
+    ]
+  },
+  {
+    "id": "evidence-leather-photo-journal",
+    "name": "Leather Photo Journal",
+    "file": "Leather/Leather_Photo_Journal.png",
+    "photo": [
+      307,
+      371,
+      796,
+      1000
+    ],
+    "labelDefault": [
+      0.5,
+      0.9
+    ]
+  },
+  {
+    "id": "evidence-forensic-dossier-form",
+    "name": "Forensic Dossier Form",
+    "file": "Evidence Files/Forensic_Dossier_Form.png",
+    "photo": [
+      645,
+      133,
+      1017,
+      503
+    ],
+    "labelDefault": [
+      0.5,
+      0.9
+    ]
+  },
+  {
+    "id": "evidence-baroque-portrait-frame",
+    "name": "Baroque Portrait Frame",
+    "file": "Photo Frames/Baroque_Portrait_Frame.png",
+    "photo": [
+      295,
+      330,
+      840,
+      1049
+    ],
+    "labelDefault": [
+      0.5,
+      0.9
+    ]
+  },
+  {
+    "id": "evidence-tied-evidence-envelope",
+    "name": "Tied Evidence Envelope",
+    "file": "Evidence Files/Tied_Evidence_Envelope.png",
+    "photo": [
+      206,
+      518,
+      728,
+      1140
+    ],
+    "labelDefault": [
+      0.5,
+      0.9
+    ]
+  },
+  {
+    "id": "evidence-fingerprint-record-sheet",
+    "name": "Fingerprint Record Sheet",
+    "file": "Evidence Files/Fingerprint_Record_Sheet.png",
+    "photo": [
+      649,
+      130,
+      1016,
+      545
+    ],
+    "labelDefault": [
+      0.5,
+      0.9
+    ]
+  },
+  {
+    "id": "evidence-index-card-photo-note",
+    "name": "Index Card Photo Note",
+    "file": "Notes & Journals/Index_Card_Photo_Note.png",
+    "photo": [
+      503,
+      274,
+      1012,
+      850
+    ],
+    "labelDefault": [
+      0.5,
+      0.9
+    ]
+  },
+  {
+    "id": "evidence-evidence-board-collage",
+    "name": "Evidence Board Collage",
+    "file": "Evidence Files/Evidence_Board_Collage.png",
+    "photo": [
+      335,
+      211,
+      844,
+      824
+    ],
+    "labelDefault": [
+      0.5,
+      0.9
+    ]
+  },
+  {
+    "id": "evidence-blank-lined-detective-note",
+    "name": "Blank Lined Detective Note",
+    "file": "Notes & Journals/Blank_Lined_Detective_Note.png",
+    "photo": [
+      482,
+      239,
+      994,
+      785
+    ],
+    "labelDefault": [
+      0.5,
+      0.9
+    ]
+  }
+]
