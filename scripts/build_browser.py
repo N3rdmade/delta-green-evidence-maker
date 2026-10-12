@@ -10,25 +10,25 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "_site"
 # Optional publisher-provided evidence image pack. The archive is never copied
 # into the public site; only approved categorized PNGs are extracted at build.
-pack = ROOT / "evidence_frame_library.zip"
-if pack.is_file():
-    import zipfile
-    with zipfile.ZipFile(pack) as archive:
-        for entry in archive.infolist():
-            name = entry.filename
-            if not name.startswith("frames/") or not name.lower().endswith((".png", ".webp")):
-                continue
-            relative = Path(name)
-            if relative.is_absolute() or ".." in relative.parts or len(relative.parts) < 3:
-                raise ValueError(f"Unsafe frame archive path: {name}")
-            target = ROOT.joinpath(*relative.parts)
-            if not target.is_relative_to(ROOT / "frames"):
-                raise ValueError(f"Unsafe frame destination: {name}")
-            target.parent.mkdir(parents=True, exist_ok=True)
-            if not target.exists():
-                with archive.open(entry) as source_file, target.open("wb") as destination:
-                    shutil.copyfileobj(source_file, destination)
-
+for pack in [ROOT / "evidence_frame_library.zip", ROOT / "evidence_frame_additions.zip"]:
+ if pack.is_file():
+     import zipfile
+     with zipfile.ZipFile(pack) as archive:
+         for entry in archive.infolist():
+             name = entry.filename
+             if not name.startswith("frames/") or not name.lower().endswith((".png", ".webp")):
+                 continue
+             relative = Path(name)
+             if relative.is_absolute() or ".." in relative.parts or len(relative.parts) < 3:
+                 raise ValueError(f"Unsafe frame archive path: {name}")
+             target = ROOT.joinpath(*relative.parts)
+             if not target.is_relative_to(ROOT / "frames"):
+                 raise ValueError(f"Unsafe frame destination: {name}")
+             target.parent.mkdir(parents=True, exist_ok=True)
+             if not target.exists():
+                 with archive.open(entry) as source_file, target.open("wb") as destination:
+                     shutil.copyfileobj(source_file, destination)
+ 
 source = (ROOT / "photo_composer.py").read_text()
 tree = ast.parse(source)
 namespace = {"ROOT": ROOT, "FRAMES_DIR": ROOT / "frames", "STICKERS_DIR": ROOT / "stickers",
@@ -60,7 +60,7 @@ for path in sorted((ROOT / "custom_fonts").glob("*")):
 # exactly like the sticker library. No category-name rules to maintain.
 frame_library = namespace["build_frame_library"]()
 
-manifest = {"version": "v131-browser", "frames": frame_library,
+manifest = {"version": "v131.1-browser", "frames": frame_library,
             "stickers": namespace["build_sticker_library"](), "fonts": fonts,
             "styles": namespace["STYLE_SEEDS"], "fallbacks": namespace["STYLE_FALLBACKS"],
             "categories": namespace["DIRECT_CATEGORIES"]}
@@ -84,7 +84,7 @@ shutil.copy2(ROOT / "browser/adapter.js", OUT / "adapter.js")
 (OUT / ".nojekyll").touch()
 
 html = (ROOT / "migration/v127/index.html").read_text()
-html = html.replace("<script>", '<script src="adapter.js?v=131"></script>\n<script>', 1)
+html = html.replace("<script>", '<script src="adapter.js?v=131.1"></script>\n<script>', 1)
 html = html.replace('src="/asset/logo_app.png"', 'src="logo_app.png"')
 html = html.replace("fetch('/", "BrowserApp.api('/")
 html = html.replace("return '/frame/'+String(file||'').split('/').map(part=>encodeURIComponent(part)).join('/');",
