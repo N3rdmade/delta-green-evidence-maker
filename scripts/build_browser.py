@@ -16,7 +16,7 @@ if pack.is_file():
     with zipfile.ZipFile(pack) as archive:
         for entry in archive.infolist():
             name = entry.filename
-            if not name.startswith("frames/") or not name.lower().endswith(".png"):
+            if not name.startswith("frames/") or not name.lower().endswith((".png", ".webp")):
                 continue
             relative = Path(name)
             if relative.is_absolute() or ".." in relative.parts or len(relative.parts) < 3:
@@ -87,7 +87,7 @@ for category in FRAME_CATEGORY_ORDER:
         found.setdefault(category, {"name": category, "subcategories": []})
 frame_library["categories"] = sorted(found.values(), key=lambda item: (FRAME_CATEGORY_ORDER.index(item["name"]) if item["name"] in FRAME_CATEGORY_ORDER else len(FRAME_CATEGORY_ORDER), item["name"].lower()))
 
-manifest = {"version": "v130.3-browser", "frames": frame_library,
+manifest = {"version": "v130.4-browser", "frames": frame_library,
             "stickers": namespace["build_sticker_library"](), "fonts": fonts,
             "styles": namespace["STYLE_SEEDS"], "fallbacks": namespace["STYLE_FALLBACKS"],
             "categories": namespace["DIRECT_CATEGORIES"]}
@@ -100,7 +100,7 @@ shutil.copy2(ROOT / "browser/adapter.js", OUT / "adapter.js")
 (OUT / ".nojekyll").touch()
 
 html = (ROOT / "migration/v127/index.html").read_text()
-html = html.replace("<script>", '<script src="adapter.js?v=130.3"></script>\n<script>', 1)
+html = html.replace("<script>", '<script src="adapter.js?v=130.4"></script>\n<script>', 1)
 html = html.replace('src="/asset/logo_app.png"', 'src="logo_app.png"')
 html = html.replace("fetch('/", "BrowserApp.api('/")
 html = html.replace("return '/frame/'+String(file||'').split('/').map(part=>encodeURIComponent(part)).join('/');",
