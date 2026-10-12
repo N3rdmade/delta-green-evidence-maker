@@ -38,6 +38,24 @@ const assert = require('assert');
  });
  assert.deepStrictEqual(photoWindowStable.after,photoWindowStable.before);
  assert.strictEqual(photoWindowStable.enabled,true);
+ // Switching to a DIFFERENT selected frame refits the main photo once.
+ const framesReflow=await page.evaluate(async()=>{
+   const first=currentFrame.id, before=imagePlacementFrameBounds.slice();
+   const candidate=frameList.find(f=>f.id!==first && JSON.stringify(f.photo)!==JSON.stringify(currentFrame.photo));
+   if(!candidate)throw new Error('No differently sized frame available for refit test');
+   selectFrame(candidate.id,false,false);
+   await new Promise((resolve,reject)=>{const timeout=setTimeout(()=>reject(new Error('Frame switch not completed')),7000);
+     const poll=()=>{if(pendingPhotoRefitFrameId===null && currentFrame.id===candidate.id && frameImg.complete){clearTimeout(timeout);resolve();}else setTimeout(poll,30);};poll();});
+   const after=imagePlacementFrameBounds.slice();
+   // Re-select original frame to avoid changing later smoke-test expectations.
+   selectFrame(first,false,false);
+   await new Promise((resolve,reject)=>{const timeout=setTimeout(()=>reject(new Error('Original frame restore timed out')),7000);
+     const poll=()=>{if(pendingPhotoRefitFrameId===null && currentFrame.id===first && frameImg.complete){clearTimeout(timeout);resolve();}else setTimeout(poll,30);};poll();});
+   return {before,after,expected:candidate.photo};
+ });
+ assert.deepStrictEqual(framesReflow.after,framesReflow.expected);
+ assert.notDeepStrictEqual(framesReflow.before,framesReflow.after);
+
  // Retain shape-editing and sticker layers from the reference editor.
  await page.evaluate(()=>{setBgShape('circle'); if(bgBoxAutoFitEnabled)toggleBgAutoFit(); bgBoxRot=17; bgBoxW=.8; syncBgBox(); addStickerInstance(0);});
  await page.waitForFunction(()=>stickerInstances.length===1&&stickerInstances[0].loaded);
