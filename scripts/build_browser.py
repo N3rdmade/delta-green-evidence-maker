@@ -31,7 +31,7 @@ for path in sorted((ROOT / "custom_fonts").glob("*")):
     fonts.append(dict(id=hashlib.sha1(path.name.encode()).hexdigest()[:14],
                       name=name, custom=False, themed=True,
                       url="custom_fonts/" + path.name))
-manifest = {"version": "v129-browser", "frames": namespace["build_frame_library"](),
+manifest = {"version": "v129.1-browser", "frames": namespace["build_frame_library"](),
             "stickers": namespace["build_sticker_library"](), "fonts": fonts,
             "styles": namespace["STYLE_SEEDS"], "fallbacks": namespace["STYLE_FALLBACKS"],
             "categories": namespace["DIRECT_CATEGORIES"]}
@@ -44,7 +44,7 @@ shutil.copy2(ROOT / "browser/adapter.js", OUT / "adapter.js")
 (OUT / ".nojekyll").touch()
 
 html = (ROOT / "migration/v127/index.html").read_text()
-html = html.replace("<script>", '<script src="adapter.js?v=129"></script>\n<script>', 1)
+html = html.replace("<script>", '<script src="adapter.js?v=129.1"></script>\n<script>', 1)
 html = html.replace('src="/asset/logo_app.png"', 'src="logo_app.png"')
 html = html.replace("fetch('/", "BrowserApp.api('/")
 html = html.replace("return '/frame/'+String(file||'').split('/').map(part=>encodeURIComponent(part)).join('/');",
