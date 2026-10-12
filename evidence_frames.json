@@ -313,5 +313,140 @@
       0.5,
       0.9
     ]
+  },
+  {
+    "id": "evidence-classic-taped-polaroid",
+    "name": "Classic Taped Polaroid",
+    "file": "Polaroids/Classic_Taped_Polaroid.webp",
+    "photo": [
+      135,
+      207,
+      1003,
+      1062
+    ],
+    "labelDefault": [
+      0.5,
+      0.9
+    ]
+  },
+  {
+    "id": "evidence-dated-vintage-polaroid",
+    "name": "Dated Vintage Polaroid",
+    "file": "Polaroids/Dated_Vintage_Polaroid.webp",
+    "photo": [
+      130,
+      152,
+      996,
+      1049
+    ],
+    "labelDefault": [
+      0.5,
+      0.9
+    ]
+  },
+  {
+    "id": "evidence-aged-sepia-mount",
+    "name": "Aged Sepia Mount",
+    "file": "Photo Frames/Aged_Sepia_Mount.webp",
+    "photo": [
+      229,
+      228,
+      894,
+      1119
+    ],
+    "labelDefault": [
+      0.5,
+      0.9
+    ]
+  },
+  {
+    "id": "evidence-victorian-oval-frame",
+    "name": "Victorian Oval Frame",
+    "file": "Photo Frames/Victorian_Oval_Frame.webp",
+    "photo": [
+      241,
+      232,
+      880,
+      1120
+    ],
+    "labelDefault": [
+      0.5,
+      0.9
+    ]
+  },
+  {
+    "id": "evidence-antique-newspaper-front-page",
+    "name": "Antique Newspaper Front Page",
+    "file": "Newspaper/Antique_Newspaper_Front_Page.webp",
+    "photo": [
+      277,
+      422,
+      799,
+      764
+    ],
+    "labelDefault": [
+      0.5,
+      0.9
+    ]
+  },
+  {
+    "id": "evidence-newspaper-photo-clipping",
+    "name": "Newspaper Photo Clipping",
+    "file": "Newspaper/Newspaper_Photo_Clipping.webp",
+    "photo": [
+      537,
+      253,
+      1023,
+      811
+    ],
+    "labelDefault": [
+      0.5,
+      0.9
+    ]
+  },
+  {
+    "id": "evidence-vintage-notes-photo-page",
+    "name": "Vintage Notes Photo Page",
+    "file": "Notes & Journals/Vintage_Notes_Photo_Page.webp",
+    "photo": [
+      484,
+      232,
+      981,
+      764
+    ],
+    "labelDefault": [
+      0.5,
+      0.9
+    ]
+  },
+  {
+    "id": "evidence-leather-file-cover",
+    "name": "Leather File Cover",
+    "file": "Leather/Leather_File_Cover.webp",
+    "photo": [
+      206,
+      247,
+      716,
+      893
+    ],
+    "labelDefault": [
+      0.5,
+      0.9
+    ]
+  },
+  {
+    "id": "evidence-leather-evidence-journal",
+    "name": "Leather Evidence Journal",
+    "file": "Leather/Leather_Evidence_Journal.webp",
+    "photo": [
+      270,
+      208,
+      892,
+      895
+    ],
+    "labelDefault": [
+      0.5,
+      0.9
+    ]
   }
 ]
