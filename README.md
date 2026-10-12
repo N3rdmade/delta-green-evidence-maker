@@ -1,78 +1,87 @@
 # Delta Green Evidence Maker
 
-A handout and evidence image composer for Delta Green games.
+**[Open the Evidence Maker](https://n3rdmade.github.io/delta-green-evidence-maker/)**
 
-## v43 — Browser edition
+A browser-based editor for creating Delta Green handouts, case files, vintage photo evidence, and other investigation props. **No software installation required.**
 
-The browser edition preserves the v42 editor, including its shape controls and frame-loading save fix. It runs entirely in the browser: no Python installation or separate server is required.
+## Using the editor
 
-- 44 frames and 58 stickers, plus image, frame, sticker, and font import.
-- PNG downloads with transparent or opaque backgrounds.
-- Editable projects saved on this device using browser storage.
-- **Export Project** downloads a portable JSON backup with source images, used fonts, and imported assets. **Import Project** reopens it.
-- **Import Desktop Folder** reads older project folders. Select the full **RAW PROJECTS** folder so referenced images in **SOURCES** are available.
-- **Choose Folder** writes PNGs directly to a selected folder in supporting browsers. Otherwise PNGs use browser downloads.
-- Online fonts use Fontsource. Image URLs must permit browser access; when a host blocks access, download the image and upload it instead.
+Choose a frame, upload your photo, customize its placement, then export a flattened PNG. The editor supports stickers, masks, punches, text, visual effects, imported fonts, and editable projects.
 
-Browser projects are not uploaded to GitHub or synchronized between devices. Clearing site data removes browser saves. Export project backups for work you want to keep. Browsers cannot automatically enumerate Windows fonts; use the bundled fonts or import your own font files.
+- **Frames and stickers:** Everyone sees the built-in collection. Your personal uploads remain in **your own browser**, not in GitHub.
+- **Categories:** Folder names under `frames/` and `stickers/` become the main categories. Nested folders become subcategories automatically on the next site build.
+- **Recent projects and recovery:** Stored locally in your browser with autosave snapshots. Clearing **site data** may erase locally saved work.
+- **Workspace backup:** In supported browsers, choose a local workspace folder to save exports, projects, custom assets, fonts, and recovery snapshots to separate organized folders. Without one, exports use Downloads.
+- **PNG export:** Flattened image with optional transparency; editable data is saved separately as a project backup.
 
-In Downloads mode, Overwrite replaces the browser project but starts a new download; your browser may number the PNG filename. A selected output folder supports direct replacement.
+## Repo layout
 
-### Publishing
-
-The **Publish browser edition** GitHub Actions workflow builds the site, runs browser smoke tests, and then deploys it. Enable **Settings → Pages → Source → GitHub Actions** once. Pushes to main subsequently update the site automatically.
-
-Expected site address after deployment: https://n3rdmade.github.io/delta-green-evidence-maker/
-
-### Build and preview
-
-```sh
-python scripts/build_browser.py
-python -m http.server 8765 --directory _site
+```text
+.github/workflows/pages.yml    GitHub Pages build and deployment
+src/editor.html                Active editor source
+browser/adapter.js             Local browser storage and file handling
+frames/                        Built-in frames (folders = categories)
+stickers/                      Built-in stickers (folders = categories)
+custom_fonts/                  Built-in fonts
+frames.json                    Original frame placement metadata
+evidence_frames.json           New evidence frame photo-opening metadata
+evidence_frame_library.zip     Pack of 21 published evidence frames
+scripts/build_browser.py       Static website builder and category discovery
+scripts/test_browser.cjs       Browser regression tests
+photo_composer.py              Frame/sticker library metadata functions
 ```
 
-Open http://localhost:8765/. The builder adapts the reference editor into a static site. Add repository assets under frames/, stickers/, or custom_fonts/ and rebuild.
+**The ZIP in the repository is an asset pack processed automatically at build time**, not a program installer. `evidence_frame_additions.zip` can be added later to publish the remaining nine artwork designs.
 
-### Browser smoke tests
+There are no Windows launchers or retired-version folders in the current source tree. Old commits remain accessible through Git history.
 
-```sh
+## Adding shared frames or stickers
+
+Place new image files in the appropriate folder and commit:
+
+```text
+frames/
+  Newspaper/
+    Clippings/
+      torn-article.webp
+  Polaroids/
+    vintage-polaroid.png
+  Notes & Journals/
+    notebook-page.webp
+stickers/
+  Stamps/
+    confidential.png
+```
+
+The next successful GitHub Pages build discovers new category names and subcategories automatically. **No hardcoded category list is required.**
+
+For frames, transparent photo windows are important. To specify exact photo-placement coordinates or a custom frame name, add an entry to `evidence_frames.json` (or `frames.json` for original frames). The editor also discovers unregistered frames, but uses a default photo-placement box for those.
+
+## Building and testing locally
+
+Requires Python 3.12+ and Node.js 22+ for testing; **visitors don't need either**.
+
+```bash
+python scripts/build_browser.py
+python -m http.server 8765
+```
+
+Open `http://localhost:8765/_site/`.
+
+Browser smoke tests (with the server running):
+
+```bash
 npm install --no-save --package-lock=false playwright@1.62.1
 npx playwright install chromium
 node scripts/test_browser.cjs
 ```
 
-Run the preview server first. Tests cover loading, image upload, shape/sticker state, PNG export, project persistence/reopen, conflicts/versioning, and portable import. Set EVIDENCE_TEST_URL to test a subpath or deployed version.
+Pushes to `main` trigger GitHub Actions, which builds, tests and publishes the site. Check the [Actions page](https://github.com/N3rdmade/delta-green-evidence-maker/actions).
 
-## Original local Python app (v42)
+## Privacy and backups
 
-The original index.html and photo_composer.py remain unchanged. On Windows, run **START.bat**, or:
+The GitHub Pages website serves public built-in assets but **does not upload visitor images or projects to your repository**. Imported files and editable projects stay on the user's device. For long-term protection, select a local Workspace Folder or export project backups. Browser storage is not a permanent cloud backup.
 
-```sh
-python -m pip install -r requirements.txt
-python photo_composer.py
-```
+## Licensing
 
-## Bundled assets
-
-The repository's code license does not establish ownership of third-party fonts, logos, or artwork. Their respective rights and licenses still apply.
-
-## v128 — Private local workspace and flat PNG files
-
-Normal PNG exports are re-rendered into a new single-layer RGBA bitmap. Transparent export preserves the alpha channel; opaque export adds its selected backdrop. Editable layer information remains only in the separate project file.
-
-Imported frames, stickers, fonts, and sources belong to the visitor's own browser storage, **never the GitHub repository**. Existing browser imports are still recognized.
-
-Optionally choose a local workspace folder (in browsers supporting the File System Access API). The editor creates and uses:
-
-```text
-Delta Green Evidence Maker/
-  Projects/              editable project backups
-  Exports/               flattened PNG images
-  Assets/
-    Frames/              imported frame files
-    Stickers/            imported sticker files
-    Fonts/               imported fonts
-    Sources/             uploaded source images
-```
-
-Without a chosen folder, projects/assets stay in local IndexedDB and PNG/project exports use standard browser downloads. Permission to select a folder is always a user action; selecting the same workspace again may be necessary after restarting the browser.
+See [LICENSE](LICENSE). Bundled assets and third-party fonts may have separate rights and licensing terms.
