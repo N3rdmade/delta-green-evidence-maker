@@ -1,40 +1,24 @@
-## v129 — Crash recovery and workspace backups
-
-- Autosave unfinished work to device-local IndexedDB, debounced after editing stops with periodic checkpoints.
-- Prompt to restore the latest recovery snapshot on return.
-- Add visible warnings about the risks of clearing browser site data.
-- Back up all browser projects, old and new imported frames/stickers, source images, and custom fonts into a selected local workspace.
-- Create Backups/Autosave and mirror recovery snapshots there when workspace access is available.
-- Remember the user's workspace directory handle where browser permissions allow; do not assume permission after restart.
-
-## v128 — Flattened images and local workspace
-
-- Re-encode normal PNG exports as a single bitmap, retaining transparency if selected.
-- Add one optional private workspace folder with nested Projects, Exports and Assets folders.
-- Keep uploaded image assets and source images in per-browser storage or the selected device folder, not GitHub.
-- Preserve old imported assets through compatible reads and separate new asset stores.
-
-## v44 — Project reopen regression fix
-
-- Save portable project resources with browser project records, not only downloaded backups.
-- Route reopening through the browser adapter explicitly.
-- Fail browser smoke tests immediately with the reported project error instead of a silent timeout.
-- Keep the v42 desktop editor unchanged.
-
 # Changelog
 
-## v43 — Browser edition
+## v131 — Repository cleanup and automatic frame folders
+- Reorganized original frames into real category folders.
+- Frame and sticker menus now use the folder tree, including nested subcategories.
+- Removed unnecessary numeric prefixes from frame display names.
+- Moved the active browser editor to `src/editor.html` and removed retired Windows launchers and obsolete root files.
+- Rewrote the README. Earlier code versions remain in Git history.
 
-- Added a static build that retains the v42 editor and original desktop app.
-- Replaced server storage with browser project storage, PNG downloads, and optional directory selection.
-- Added portable project backups and import of desktop RAW PROJECTS folders.
-- Added browser asset/font import, including font ZIPs, and direct Fontsource access.
-- Added automatic GitHub Pages deployment gated by browser tests.
+## v130 — Editing and evidence tools
+- Keep photo placement steady when editing the current frame; refit on a deliberate frame switch.
+- Added Main Image as a punch-through target.
+- Prepared an evidence artwork collection with explicit photo-window metadata.
 
-## v42 — GitHub baseline
+## v129 — Crash recovery and workspace backups
+- Added debounced local autosave, recovery prompts, and storage warnings.
+- Added optional workspace backup folders for projects, frames, stickers, fonts, sources and autosaves.
 
-- Imported application source and asset libraries from the v42 archive.
-- Preserved the existing shape-editor and frame-loading save fixes.
-- Excluded personal projects, generated output, uploads, caches, and local settings.
-- Added repository documentation and ignore rules.
-- No application behavior changes. Browser-only hosting is not yet implemented.
+## v128 — Export and privacy
+- Flatten standard PNG exports while retaining transparency when selected.
+- Keep visitor imports private and local, with optional device workspace storage.
+
+## Earlier history
+The project began as a desktop editor and was migrated to a browser application. Historical versions are preserved in Git rather than maintained as duplicate working folders.
