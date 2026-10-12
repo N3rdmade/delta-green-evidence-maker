@@ -1,3 +1,12 @@
+## v129 — Crash recovery and workspace backups
+
+- Autosave unfinished work to device-local IndexedDB, debounced after editing stops with periodic checkpoints.
+- Prompt to restore the latest recovery snapshot on return.
+- Add visible warnings about the risks of clearing browser site data.
+- Back up all browser projects, old and new imported frames/stickers, source images, and custom fonts into a selected local workspace.
+- Create Backups/Autosave and mirror recovery snapshots there when workspace access is available.
+- Remember the user's workspace directory handle where browser permissions allow; do not assume permission after restart.
+
 ## v128 — Flattened images and local workspace
 
 - Re-encode normal PNG exports as a single bitmap, retaining transparency if selected.
