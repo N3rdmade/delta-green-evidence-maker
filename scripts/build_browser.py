@@ -123,6 +123,11 @@ html = html.replace(
 html = html.replace(
     "if(frame===currentFrame && imageLoaded && imageBoxScope==='photo')captureMainImagePlacement();",
     "/* Frame refresh must not overwrite an already placed main image. */")
+# Rebuilding a punched/edited frame may auto-fit the BACKGROUND, but the
+# already positioned foreground photo must retain its independent geometry.
+html = html.replace(
+    "if(fitted && imageLoaded && imageBoxScope==='photo'){\\n      captureMainImagePlacement();\\n      syncImage();\\n    }",
+    "if(fitted && imageLoaded && imageBoxScope==='photo'){\\n      syncImage();\\n    }")
 # Capture the photo aperture used at initial placement. Subsequent changes to
 # the frame's editable photo bounds must not resize the original photo window.
 html = html.replace("function captureMainImagePlacement(){",
