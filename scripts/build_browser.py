@@ -46,7 +46,16 @@ frame_library = namespace["build_frame_library"]()
 for frame in frame_library["frames"]:
     if frame.get("category"):
         continue
-    frame["category"] = next((category for category, names in ROOT_FRAME_CATEGORIES.items() if frame["name"] in names), "Photo Frames")
+    inferred = next((category for category, names in ROOT_FRAME_CATEGORIES.items() if frame["name"] in names), None)
+    if inferred is None:
+        label = frame["name"].lower()
+        inferred = ("Newspaper" if any(k in label for k in ("newspaper", "newsprint", "clipping")) else
+                    "Leather" if any(k in label for k in ("leather", "journal cover", "dossier cover")) else
+                    "Notes & Journals" if any(k in label for k in ("note", "journal", "notebook", "memo", "scrapbook")) else
+                    "Polaroids" if any(k in label for k in ("polaroid", "instant photo")) else
+                    "Evidence Files" if any(k in label for k in ("evidence", "dossier", "forensic", "booking", "police")) else
+                    "Photo Frames")
+    frame["category"] = inferred
 found = {entry["name"]: entry for entry in frame_library["categories"]}
 for category in FRAME_CATEGORY_ORDER:
     if any(f["category"] == category for f in frame_library["frames"]):
