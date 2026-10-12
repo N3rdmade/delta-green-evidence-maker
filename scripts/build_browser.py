@@ -13,7 +13,11 @@ tree = ast.parse(source)
 namespace = {"ROOT": ROOT, "FRAMES_DIR": ROOT / "frames", "STICKERS_DIR": ROOT / "stickers",
              "re": re, "STICKER_EXTENSIONS": {".png", ".jpg", ".jpeg", ".webp"}}
 meta = json.loads((ROOT / "frames.json").read_text())
-namespace.update(FRAME_META_BY_FILE={f["file"]: f for f in meta}, DEFAULT_FRAME_META=meta[0])
+# Photo-window coordinates for optional evidence artwork, picked up automatically
+# only when the corresponding image actually exists under frames/<category>/.
+extra_meta = json.loads((ROOT / "evidence_frames.json").read_text()) if (ROOT / "evidence_frames.json").exists() else []
+all_frame_metadata = meta + extra_meta
+namespace.update(FRAME_META_BY_FILE={f["file"]: f for f in all_frame_metadata}, DEFAULT_FRAME_META=meta[0])
 functions = {"prettify_name", "build_frame_library", "build_sticker_library"}
 settings = {"STYLE_SEEDS", "STYLE_FALLBACKS", "DIRECT_CATEGORIES"}
 for node in tree.body:
