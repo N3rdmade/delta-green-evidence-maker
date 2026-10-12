@@ -35,6 +35,15 @@ const assert = require('assert');
  const saved=await page.evaluate(async()=>await (await BrowserApp.api('/projects')).json());
  assert.strictEqual(saved.projects.length,1);
  assert.strictEqual(saved.projects[0].name,'BROWSER TEST');
+ // v129: recovery snapshots are created without manual saving or downloads.
+ await page.evaluate(()=>BrowserApp.markDirty());
+ await page.waitForFunction(async()=>{
+   const db=await new Promise((resolve,reject)=>{const req=indexedDB.open('delta-green-evidence-maker');req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);});
+   const project=await new Promise(resolve=>{const req=db.transaction('recovery').objectStore('recovery').get('current');req.onsuccess=()=>resolve(req.result);});
+   db.close();
+   return project?.project?.label==='BROWSER TEST';
+ },null,{timeout:20000});
+
  const exportPromise=page.waitForEvent('download');
  await page.getByRole('button',{name:'Export Project',exact:true}).click();
  await (await exportPromise).saveAs('test-results/project.evidence.json');
