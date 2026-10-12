@@ -55,3 +55,24 @@ python photo_composer.py
 ## Bundled assets
 
 The repository's code license does not establish ownership of third-party fonts, logos, or artwork. Their respective rights and licenses still apply.
+
+## v128 — Private local workspace and flat PNG files
+
+Normal PNG exports are re-rendered into a new single-layer RGBA bitmap. Transparent export preserves the alpha channel; opaque export adds its selected backdrop. Editable layer information remains only in the separate project file.
+
+Imported frames, stickers, fonts, and sources belong to the visitor's own browser storage, **never the GitHub repository**. Existing browser imports are still recognized.
+
+Optionally choose a local workspace folder (in browsers supporting the File System Access API). The editor creates and uses:
+
+```text
+Delta Green Evidence Maker/
+  Projects/              editable project backups
+  Exports/               flattened PNG images
+  Assets/
+    Frames/              imported frame files
+    Stickers/            imported sticker files
+    Fonts/               imported fonts
+    Sources/             uploaded source images
+```
+
+Without a chosen folder, projects/assets stay in local IndexedDB and PNG/project exports use standard browser downloads. Permission to select a folder is always a user action; selecting the same workspace again may be necessary after restarting the browser.
