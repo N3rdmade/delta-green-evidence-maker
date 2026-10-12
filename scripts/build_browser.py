@@ -44,7 +44,7 @@ shutil.copy2(ROOT / "browser/adapter.js", OUT / "adapter.js")
 (OUT / ".nojekyll").touch()
 
 html = (ROOT / "migration/v127/index.html").read_text()
-html = html.replace("<script>", '<script src="adapter.js?v=129.2"></script>\n<script>', 1)
+html = html.replace("<script>", '<script src="adapter.js?v=130"></script>\n<script>', 1)
 html = html.replace('src="/asset/logo_app.png"', 'src="logo_app.png"')
 html = html.replace("fetch('/", "BrowserApp.api('/")
 html = html.replace("return '/frame/'+String(file||'').split('/').map(part=>encodeURIComponent(part)).join('/');",
@@ -99,7 +99,7 @@ html = html.replace('id="savePath" class="saveBox" readonly', 'id="savePath" cla
 html = re.sub(r'<div class="projectHint">.*?</div>',
               '<div class="projectHint">Editable projects stay in this browser on this device. Use <b>Export Project</b> for a portable backup. Clearing site data removes browser saves.</div>', html, count=1)
 html = html.replace('<b>RAW PROJECTS</b>', '<b>this browser</b>')
-html = html.replace('Perfect for DELTA GREEN and other investigative games', 'v129.2 • Browser edition • Projects stay on this device')
+html = html.replace('Perfect for DELTA GREEN and other investigative games', 'v130 • Browser edition • Projects stay on this device')
 # v127's cut rebuild can complete synchronously when a sticker has no cuts.
 # Two sticker-load callbacks incorrectly assumed the return was always a Promise.
 html = html.replace("rebuildCutAssetsForTarget({kind:'sticker',index:i,node:st.node,st}).then(",
@@ -115,6 +115,44 @@ html = html.replace(
 html = html.replace(
     "namePreview.style.display=mainLabelExistsV77?'block':'none';if(mainLabelExistsV77)syncLabel();",
     "namePreview.style.display=(mainLabelEnabledV78 && mainLabelExistsV77)?'block':'none';if(mainLabelEnabledV78 && mainLabelExistsV77)syncLabel();")
+# v130: The source photo takes its initial fit when imported. Reopening or
+# editing the frame may refresh the frame preview, but must not move the photo.
+html = html.replace(
+    "if(imageLoaded && imageBoxScope==='photo')captureMainImagePlacement();",
+    "/* Preserve captured photo placement while previewing another frame. */")
+html = html.replace(
+    "if(frame===currentFrame && imageLoaded && imageBoxScope==='photo')captureMainImagePlacement();",
+    "/* Frame refresh must not overwrite an already placed main image. */")
+# Capture the photo aperture used at initial placement. Subsequent changes to
+# the frame's editable photo bounds must not resize the original photo window.
+html = html.replace("function captureMainImagePlacement(){",
+    "function captureMainImagePlacement(){ imagePlacementFrameBounds=([...((getDisplayedFrame()||currentFrame)?.photo||[0,0,1,1])]);")
+html = html.replace("function getStoredMainImagePlacementRect(scale=1){",
+    "function getStoredMainImagePlacementRect(scale=1){")
+html = html.replace("let [l,t,r,b]=frame.photo,ow=r-l,oh=b-t;\\n  return {left:(l+(imageBoxX-imageBoxW/2)*ow)*scale",
+    "let [l,t,r,b]=imagePlacementFrameBounds||frame.photo,ow=r-l,oh=b-t;\\n  return {left:(l+(imageBoxX-imageBoxW/2)*ow)*scale")
+# Persist captured geometry so saved projects reopen without jumping.
+html = html.replace("data.pendingMainLabelSpawnV83=!!pendingMainLabelSpawnV83;",
+    "data.imagePlacementFrameBounds=imagePlacementFrameBounds;data.pendingMainLabelSpawnV83=!!pendingMainLabelSpawnV83;")
+html = html.replace("pendingMainLabelSpawnV83=!!data?.pendingMainLabelSpawnV83;",
+    "imagePlacementFrameBounds=Array.isArray(data?.imagePlacementFrameBounds)?data.imagePlacementFrameBounds.slice(0,4):null;pendingMainLabelSpawnV83=!!data?.pendingMainLabelSpawnV83;")
+html = html.replace("let pendingMainLabelSpawnV83=false;",
+    "let imagePlacementFrameBounds=null;let pendingMainLabelSpawnV83=false;")
+# v130: explicit through-punch destination, separate from All Below logic.
+for tool in ('cut','eraser'):
+    existing=f'id="{tool}ScopeFrameV90"'
+    html=html.replace(f'<button {existing}',
+        f'<button id="{tool}ScopeMainImageV90" class="editToolAction" type="button" onclick="setPunchScopeV90(\\'mainImage\\')">Main Image</button><button {existing}')
+html = html.replace("['current','below','belowFrame','belowFrameBackground'].includes(v)",
+                    "['current','below','mainImage','belowFrame','belowFrameBackground'].includes(v)")
+html = html.replace("below:'Below',belowFrame:'Frame'",
+                    "below:'Below',mainImage:'MainImage',belowFrame:'Frame'")
+html = html.replace("let sourceLevel=getTargetVisualLevelV90(t),targets=[];",
+    "let sourceLevel=getTargetVisualLevelV90(t),targets=[];")
+html = html.replace("  // Main Image acts as the base image layer below normal overlays.",
+    "  if(scope==='mainImage')targets=[];\\n  // Main Image acts as the base image layer below normal overlays.")
+html = html.replace("if(t.kind!=='subject' && sourceLevel>=110 && imageLoaded && !mainImageLocked)targets.push('mainImage');",
+    "if(t.kind!=='subject' && (scope==='mainImage'||sourceLevel>=110) && imageLoaded && !mainImageLocked)targets.push('mainImage');")
 html = html.replace('</body>', '<script>BrowserApp.installUI();</script></body>')
 (OUT / "index.html").write_text(html, encoding="utf-8")
 print(f"Built {OUT}: {len(manifest['frames']['frames'])} frames, {len(manifest['stickers']['stickers'])} stickers")
