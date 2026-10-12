@@ -186,6 +186,7 @@ window.BrowserApp = (() => {
       project.savedAt = new Date().toISOString();
       project.savedWith = 'Evidence Maker v127 Browser';
       await write('projects', {id:stem, project, thumbnail:thumb.toDataURL('image/png')});
+      if(outputDirectory)await workspaceFile('project',stem+'.evidence.json',new Blob([JSON.stringify(project)],{type:'application/json'}));
     }
     if (outputDirectory) await workspaceFile('png',filename,blob);
     else download(blob,filename);
@@ -278,7 +279,7 @@ window.BrowserApp = (() => {
     const face = await new FontFace('verify_'+id, await blob.arrayBuffer()).load();
     if (face.status !== 'loaded') throw new Error('The font could not be loaded.');
     await write('fonts', {id,name,custom:true,themed:true,dataUrl});
-    if(outputDirectory) await workspaceFile('fonts',name+'.font',blob);
+    if(outputDirectory) await workspaceFile('fonts',safeName(name)+(blob.type==='font/woff2'?'.woff2':'.ttf'),blob);
     await reloadResources();
     return {id,name};
   }
