@@ -5,6 +5,8 @@ window.BrowserApp = (() => {
   const base = new URL('.', document.currentScript.src);
   const thumbnails = new Map();
   let manifest, db, catalogPromise, outputDirectory = null;
+  let autosaveTimer=null, checkpointTimer=null, autosaveBusy=false, autosaveDirty=false, autosaveRevision=0, autosaveWritten=0;
+  let recoveryBanner=null, autosaveStatus=null, restorationInProgress=false;
   let fontList = [], assets = {frames: [], stickers: []};
   const respond = (data, status = 200) => new Response(JSON.stringify(data), {
     status, headers: {'Content-Type': 'application/json'}
@@ -32,9 +34,9 @@ window.BrowserApp = (() => {
     canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('PNG export failed.')), 'image/png'));
   function openDatabase() {
     return new Promise((resolve, reject) => {
-      const request = indexedDB.open('delta-green-evidence-maker', 3);
+      const request = indexedDB.open('delta-green-evidence-maker', 4);
       request.onupgradeneeded = () => {
-        for (const name of ['projects', 'fonts', 'assets', 'settings', 'exports', 'merge-cache', 'assets-frames', 'assets-stickers', 'assets-sources']) {
+        for (const name of ['projects', 'fonts', 'assets', 'settings', 'exports', 'merge-cache', 'assets-frames', 'assets-stickers', 'assets-sources', 'recovery']) {
           if (!request.result.objectStoreNames.contains(name)) request.result.createObjectStore(name, {keyPath: 'id'});
         }
       };
@@ -71,6 +73,11 @@ window.BrowserApp = (() => {
     manifest = await response.json();
     db = await openDatabase();
     await reloadResources();
+    // The directory handle can be stored, but permission is not assumed on restart.
+    const saved=await read('settings','workspace-handle');
+    if(saved?.handle && typeof saved.handle.queryPermission==='function') {
+      try {if(await saved.handle.queryPermission({mode:'readwrite'})==='granted')outputDirectory=saved.handle;}catch(_){}
+    }
   })();
   // init() reports startup errors; keep the eagerly started promise handled.
   ready.catch(error => message(error.message));
@@ -100,7 +107,7 @@ window.BrowserApp = (() => {
   // Workspace folders exist only after the visitor explicitly selects a local folder.
   // Browser-only mode remains private and works without filesystem permission.
   const folderPath = {png:['Exports'], project:['Projects'], frames:['Assets','Frames'],
-    stickers:['Assets','Stickers'], fonts:['Assets','Fonts'], source:['Assets','Sources']};
+    stickers:['Assets','Stickers'], fonts:['Assets','Fonts'], source:['Assets','Sources'], autosave:['Backups','Autosave']};
   async function workspaceFile(kind, name, blob) {
     if (!outputDirectory) return false;
     let dir = outputDirectory;
@@ -279,7 +286,7 @@ window.BrowserApp = (() => {
     const face = await new FontFace('verify_'+id, await blob.arrayBuffer()).load();
     if (face.status !== 'loaded') throw new Error('The font could not be loaded.');
     await write('fonts', {id,name,custom:true,themed:true,dataUrl});
-    if(outputDirectory) await workspaceFile('fonts',safeName(name)+(blob.type==='font/woff2'?'.woff2':'.ttf'),blob);
+    if(outputDirectory) await workspaceFile('fonts',safeName(name)+(blob.type.includes('woff2')?'.woff2':blob.type.includes('woff')?'.woff':blob.type.includes('opentype')?'.otf':'.ttf'),blob);
     await reloadResources();
     return {id,name};
   }
@@ -339,8 +346,8 @@ window.BrowserApp = (() => {
       if(route==='/fonts' || route==='/fonts/refresh') {await reloadResources();return respond(fontList);}
       if(route==='/upload') {
         const file=body.get('file');const result=await imageUpload(file);
+        await write('assets-sources',{id:crypto.randomUUID(),name:file.name||'source.png',src:result.preview});
         if(outputDirectory)await workspaceFile('source',file.name||'source.png',file);
-        else await write('assets-sources',{id:crypto.randomUUID(),name:file.name||'source.png',src:result.preview});
         return respond(result);
       }
       if(route==='/from-url') {
@@ -488,13 +495,157 @@ window.BrowserApp = (() => {
     }
     try {
       outputDirectory=await window.showDirectoryPicker({mode:'readwrite'});
+      try {await write('settings',{id:'workspace-handle',handle:outputDirectory});}catch(error){console.warn('Cannot remember workspace handle:',error);}
       for(const segments of Object.values(folderPath)) {let d=outputDirectory;for(const part of segments)d=await d.getDirectoryHandle(part,{create:true});}
       document.getElementById('savePath').value=outputDirectory.name;
-      message('Workspace ready: '+outputDirectory.name+' / Projects, Exports, Assets.');
+      message('Workspace ready: '+outputDirectory.name+' / Projects, Exports, Assets, Backups.');
+      if(document.getElementById('savePath'))document.getElementById('savePath').value=outputDirectory.name;
+      await backupAllToWorkspace();
     } catch(error) {if(error.name!=='AbortError')message('Could not use that folder: '+error.message);}
+  }
+
+  function setAutosaveStatus(value) {
+    if(autosaveStatus)autosaveStatus.textContent=value;
+  }
+  function markDirty() {
+    if(restorationInProgress || typeof imageLoaded==='undefined' || !imageLoaded)return;
+    autosaveDirty=true;
+    autosaveRevision++;
+    setAutosaveStatus('Unsaved changes');
+    clearTimeout(autosaveTimer);
+    autosaveTimer=setTimeout(()=>{void saveRecovery();},2000);
+  }
+  async function saveRecovery() {
+    if(autosaveBusy || !autosaveDirty || !imageLoaded)return;
+    autosaveBusy=true;
+    const revision=autosaveRevision;
+    setAutosaveStatus('Saving recovery…');
+    try {
+      // Serialize off the input path; snapshots are never written per pointer move.
+      const state=await packProject(await exportProjectState());
+      const savedAt=new Date().toISOString();
+      await write('recovery',{id:'current',project:state,savedAt});
+      if(outputDirectory) {
+        try {await workspaceFile('autosave','Current Session.evidence.json',
+          new Blob([JSON.stringify(state)],{type:'application/json'}));}
+        catch(error){console.warn('Workspace autosave unavailable:',error);}
+      }
+      autosaveWritten=revision;
+      autosaveDirty=autosaveRevision!==revision;
+      setAutosaveStatus(autosaveDirty?'New changes pending':'All changes saved locally');
+    } catch(error) {
+      console.warn('Autosave failed:',error);
+      setAutosaveStatus('Autosave failed — export a backup');
+      autosaveDirty=true;
+    } finally {
+      autosaveBusy=false;
+      if(autosaveDirty) {
+        clearTimeout(autosaveTimer);
+        autosaveTimer=setTimeout(()=>{void saveRecovery();},5000);
+      }
+    }
+  }
+  async function recoveryPrompt() {
+    await ready;
+    const item=await read('recovery','current');
+    if(!item?.project || !recoveryBanner)return;
+    recoveryBanner.hidden=false;
+    const date=new Date(item.savedAt).toLocaleString();
+    recoveryBanner.querySelector('[data-recovery-text]').textContent='Recover unfinished work from '+date+'?';
+    recoveryBanner.querySelector('[data-recover]').onclick=async()=>{
+      restorationInProgress=true;
+      try {
+        await importProjectState(item.project);
+        recoveryBanner.hidden=true;
+        setAutosaveStatus('Recovered session loaded');
+      }catch(error){message('Recovery failed: '+error.message);}
+      finally{restorationInProgress=false;}
+    };
+    recoveryBanner.querySelector('[data-dismiss]').onclick=()=>{
+      recoveryBanner.hidden=true;
+      // Keep the snapshot until the next edit, instead of silently deleting it.
+    };
+  }
+  function fontFileName(font) {
+    const match=/^data:([^;,]+)/i.exec(font.dataUrl||'');
+    const mime=match?.[1]||'';
+    const ext=mime.includes('woff2')?'.woff2':mime.includes('woff')?'.woff':mime.includes('otf')||mime.includes('opentype')?'.otf':'.ttf';
+    return safeName(font.name||font.id)+ext;
+  }
+  async function backupAllToWorkspace() {
+    if(!outputDirectory) {message('Choose Workspace Folder before backing up browser projects and assets.');return false;}
+    await ready;
+    const groups=[
+      ['projects','project',record=>[safeName(record.id)+'.evidence.json',
+        new Blob([JSON.stringify(record.project)],{type:'application/json'})]],
+      ['assets-frames','frames',item=>[safeName(item.name||item.id)+'.png',dataBlob(item.src)]],
+      ['assets-stickers','stickers',item=>[safeName(item.name||item.id)+'.png',dataBlob(item.src)]],
+      ['assets-sources','source',item=>[safeName(item.name||item.id),dataBlob(item.src)]],
+      ['fonts','fonts',item=>[fontFileName(item),dataBlob(item.dataUrl)]]
+    ];
+    let count=0;
+    try {
+      // Include legacy v43/v127 imported assets as well as the new separate stores.
+      const legacy=await read('assets');
+      for(const item of legacy) {
+        if(!['frames','stickers'].includes(item.kind))continue;
+        await workspaceFile(item.kind,safeName(item.name||item.id)+'.png',dataBlob(item.src));
+        count++;
+      }
+      for(const [store,kind,convert] of groups){
+        for(const item of await read(store)){
+          if(store==='fonts'&&!item.dataUrl)continue;
+          const [name,blob]=convert(item);
+          await workspaceFile(kind,name,blob);
+          count++;
+        }
+      }
+      const recovery=await read('recovery','current');
+      if(recovery) {
+        await workspaceFile('autosave','Current Session.evidence.json',
+          new Blob([JSON.stringify(recovery.project)],{type:'application/json'}));
+        count++;
+      }
+      message('Workspace backup complete: '+count+' locally stored items copied.');
+      return true;
+    }catch(error){message('Backup incomplete: '+error.message);return false;}
+  }
+  function dataBlob(value){
+    if(!/^data:[^,]+,/.test(value||''))throw new Error('A stored asset has no portable data.');
+    const [prefix,payload]=value.split(',',2);
+    const mime=/^data:([^;]+)/.exec(prefix)?.[1]||'application/octet-stream';
+    const binary=atob(payload),bytes=new Uint8Array(binary.length);
+    for(let i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);
+    return new Blob([bytes],{type:mime});
   }
   function installUI() {
     const footer=document.querySelector('.projectPopoverFooter');
+    const popover=document.getElementById('projectPopover');
+    if(popover){
+      const info=document.createElement('div');
+      info.style.cssText='padding:9px 12px;font-size:11px;color:#e5bd75;line-height:1.5;border-top:1px solid #405058';
+      info.textContent='Projects and imports are private to this browser. Clearing site data (not just temporary cached files) can erase them. Choose a Workspace Folder and back up regularly.';
+      popover.appendChild(info);
+      const backup=document.createElement('button');backup.type='button';backup.className='smallBtn';
+      backup.textContent='Backup All to Workspace';backup.onclick=()=>{void backupAllToWorkspace();};
+      popover.appendChild(backup);
+    }
+    autosaveStatus=document.createElement('span');
+    autosaveStatus.style.cssText='font-size:11px;color:#9dd0a5;margin-left:8px';
+    autosaveStatus.textContent='Autosave ready';
+    document.querySelector('.headerActions')?.appendChild(autosaveStatus);
+    recoveryBanner=document.createElement('div');
+    recoveryBanner.hidden=true;
+    recoveryBanner.style.cssText='position:fixed;z-index:999999;bottom:24px;left:24px;background:#17242b;color:#f3f6f9;border:1px solid #8eafbd;padding:12px;border-radius:8px;box-shadow:0 5px 22px #0009';
+    recoveryBanner.innerHTML='<span data-recovery-text></span> <button type="button" data-recover>Restore</button> <button type="button" data-dismiss>Not now</button>';
+    document.body.appendChild(recoveryBanner);
+    // Capture trusted editing actions. Avoid serializing during drag events.
+    document.addEventListener('input',event=>{if(event.isTrusted)markDirty();},true);
+    document.addEventListener('change',event=>{if(event.isTrusted)markDirty();},true);
+    document.addEventListener('pointerup',event=>{if(event.isTrusted)markDirty();},true);
+    document.addEventListener('keydown',event=>{if(event.isTrusted&&!['Control','Alt','Shift','Meta'].includes(event.key))markDirty();},true);
+    checkpointTimer=setInterval(()=>{if(autosaveDirty&&!autosaveBusy)void saveRecovery();},45000);
+    ready.then(()=>setTimeout(()=>{void recoveryPrompt();},1800)).catch(console.warn);
     if(footer){
       const button=document.createElement('button');button.className='smallBtn';
       button.textContent='Import Desktop Folder';button.onclick=importDesktopFolder;
@@ -516,6 +667,6 @@ window.BrowserApp = (() => {
       conflict.querySelector('.conflictBox').appendChild(note);
     }
   }
-  return {api,ready,asset,fontUrl,thumbnail:id=>thumbnails.get(id)||'',packProject,restoreResources,
+  return {api,ready,asset,fontUrl,thumbnail:id=>thumbnails.get(id)||'',packProject,restoreResources,markDirty,saveRecovery,backupAllToWorkspace,
     exportProjectFile,importProjectFiles,importDesktopFolder,importAssets,chooseDirectory,installUI};
 })();
