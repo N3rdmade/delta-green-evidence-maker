@@ -1,3 +1,10 @@
+## v128 — Flattened images and local workspace
+
+- Re-encode normal PNG exports as a single bitmap, retaining transparency if selected.
+- Add one optional private workspace folder with nested Projects, Exports and Assets folders.
+- Keep uploaded image assets and source images in per-browser storage or the selected device folder, not GitHub.
+- Preserve old imported assets through compatible reads and separate new asset stores.
+
 ## v44 — Project reopen regression fix
 
 - Save portable project resources with browser project records, not only downloaded backups.
