@@ -129,8 +129,8 @@ html = html.replace("function captureMainImagePlacement(){",
     "function captureMainImagePlacement(){ imagePlacementFrameBounds=([...((getDisplayedFrame()||currentFrame)?.photo||[0,0,1,1])]);")
 html = html.replace("function getStoredMainImagePlacementRect(scale=1){",
     "function getStoredMainImagePlacementRect(scale=1){")
-html = html.replace("let [l,t,r,b]=frame.photo,ow=r-l,oh=b-t;\\n  return {left:(l+(imageBoxX-imageBoxW/2)*ow)*scale",
-    "let [l,t,r,b]=imagePlacementFrameBounds||frame.photo,ow=r-l,oh=b-t;\\n  return {left:(l+(imageBoxX-imageBoxW/2)*ow)*scale")
+html = html.replace("let [l,t,r,b]=frame.photo,ow=r-l,oh=b-t;\n  return {left:(l+(imageBoxX-imageBoxW/2)*ow)*scale",
+    "let [l,t,r,b]=imagePlacementFrameBounds||frame.photo,ow=r-l,oh=b-t;\n  return {left:(l+(imageBoxX-imageBoxW/2)*ow)*scale")
 # Persist captured geometry so saved projects reopen without jumping.
 html = html.replace("data.pendingMainLabelSpawnV83=!!pendingMainLabelSpawnV83;",
     "data.imagePlacementFrameBounds=imagePlacementFrameBounds;data.pendingMainLabelSpawnV83=!!pendingMainLabelSpawnV83;")
@@ -142,7 +142,7 @@ html = html.replace("let pendingMainLabelSpawnV83=false;",
 for tool in ('cut','eraser'):
     existing=f'id="{tool}ScopeFrameV90"'
     html=html.replace(f'<button {existing}',
-        f'<button id="{tool}ScopeMainImageV90" class="editToolAction" type="button" onclick="setPunchScopeV90(\\'mainImage\\')">Main Image</button><button {existing}')
+        f'<button id="{tool}ScopeMainImageV90" class="editToolAction" type="button" onclick="setPunchScopeV90(&#39;mainImage&#39;)">Main Image</button><button {existing}')
 html = html.replace("['current','below','belowFrame','belowFrameBackground'].includes(v)",
                     "['current','below','mainImage','belowFrame','belowFrameBackground'].includes(v)")
 html = html.replace("below:'Below',belowFrame:'Frame'",
@@ -150,7 +150,7 @@ html = html.replace("below:'Below',belowFrame:'Frame'",
 html = html.replace("let sourceLevel=getTargetVisualLevelV90(t),targets=[];",
     "let sourceLevel=getTargetVisualLevelV90(t),targets=[];")
 html = html.replace("  // Main Image acts as the base image layer below normal overlays.",
-    "  if(scope==='mainImage')targets=[];\\n  // Main Image acts as the base image layer below normal overlays.")
+    "  if(scope==='mainImage')targets=[];\n  // Main Image acts as the base image layer below normal overlays.")
 html = html.replace("if(t.kind!=='subject' && sourceLevel>=110 && imageLoaded && !mainImageLocked)targets.push('mainImage');",
     "if(t.kind!=='subject' && (scope==='mainImage'||sourceLevel>=110) && imageLoaded && !mainImageLocked)targets.push('mainImage');")
 html = html.replace('</body>', '<script>BrowserApp.installUI();</script></body>')
