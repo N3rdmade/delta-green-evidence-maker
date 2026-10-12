@@ -62,10 +62,12 @@ window.BrowserApp = (() => {
     });
   }
   async function reloadResources() {
-    fontList = [...manifest.fonts, ...await read('fonts')];
+    // The shared bundled font library is always present; private additions follow.
+    fontList = [...manifest.fonts, ...(await read('fonts')).filter(f=>!manifest.fonts.some(base=>base.id===f.id))];
     const custom = await read('assets'); // Keep earlier browser imports usable.
-    assets.frames = [...custom.filter(item => item.kind === 'frames'), ...await read('assets-frames')];
-    assets.stickers = [...custom.filter(item => item.kind === 'stickers'), ...await read('assets-stickers')];
+    const unique=(kind, saved)=>Array.from(new Map(saved.filter(item=>item.kind===kind && !manifest[kind][kind].some(base=>base.id===item.id || base.file===item.file)).map(item=>[item.id,item])).values());
+    assets.frames = unique('frames',[...custom, ...await read('assets-frames')]);
+    assets.stickers = unique('stickers',[...custom, ...await read('assets-stickers')]);
   }
   const ready = (async () => {
     const response = await nativeFetch(absolute('manifest.json'));
@@ -94,7 +96,7 @@ window.BrowserApp = (() => {
     const bundled = manifest[kind];
     return {
       ...bundled,
-      [kind]: [...bundled[kind], ...assets[kind]],
+      [kind]: [...bundled[kind], ...assets[kind]], // public defaults plus this visitor's private imports
       categories: [...bundled.categories, ...(assets[kind].length ? [{name:'Imported', subcategories:[]}] : [])]
     };
   }
