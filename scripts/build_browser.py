@@ -1,4 +1,4 @@
-"""Build a static browser edition from the recovered v127 editor and existing asset library."""
+"""Build the current browser editor and its folder-organized asset library."""
 import ast
 import hashlib
 import json
@@ -59,6 +59,11 @@ for path in sorted((ROOT / "custom_fonts").glob("*")):
 # Categories and subcategories are derived only from physical folders,
 # exactly like the sticker library. No category-name rules to maintain.
 frame_library = namespace["build_frame_library"]()
+# Display human-readable titles even when filenames carry ordering prefixes.
+for item in frame_library["frames"]:
+    item["name"] = re.sub(r"^\\d+[\\s._-]+", "", item["name"]).strip()
+    item["name"] = re.sub(r"\\s+", " ", item["name"])
+
 
 manifest = {"version": "v131.1-browser", "frames": frame_library,
             "stickers": namespace["build_sticker_library"](), "fonts": fonts,
@@ -83,7 +88,7 @@ shutil.copy2(ROOT / "browser/adapter.js", OUT / "adapter.js")
 (OUT / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False), encoding="utf-8")
 (OUT / ".nojekyll").touch()
 
-html = (ROOT / "migration/v127/index.html").read_text()
+html = (ROOT / "src/editor.html").read_text()
 html = html.replace("<script>", '<script src="adapter.js?v=131.1"></script>\n<script>', 1)
 html = html.replace('src="/asset/logo_app.png"', 'src="logo_app.png"')
 html = html.replace("fetch('/", "BrowserApp.api('/")
