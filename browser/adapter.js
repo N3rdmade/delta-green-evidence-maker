@@ -1,4 +1,4 @@
-/* Browser storage and file adapter for the v42 editor. No server or Python required. */
+/* Per-device storage and workspace adapter for the v127 browser editor. */
 'use strict';
 window.BrowserApp = (() => {
   const nativeFetch = window.fetch.bind(window);
@@ -32,9 +32,9 @@ window.BrowserApp = (() => {
     canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('PNG export failed.')), 'image/png'));
   function openDatabase() {
     return new Promise((resolve, reject) => {
-      const request = indexedDB.open('delta-green-evidence-maker', 2);
+      const request = indexedDB.open('delta-green-evidence-maker', 3);
       request.onupgradeneeded = () => {
-        for (const name of ['projects', 'fonts', 'assets', 'settings', 'exports', 'merge-cache']) {
+        for (const name of ['projects', 'fonts', 'assets', 'settings', 'exports', 'merge-cache', 'assets-frames', 'assets-stickers', 'assets-sources']) {
           if (!request.result.objectStoreNames.contains(name)) request.result.createObjectStore(name, {keyPath: 'id'});
         }
       };
@@ -61,9 +61,9 @@ window.BrowserApp = (() => {
   }
   async function reloadResources() {
     fontList = [...manifest.fonts, ...await read('fonts')];
-    const custom = await read('assets');
-    assets.frames = custom.filter(item => item.kind === 'frames');
-    assets.stickers = custom.filter(item => item.kind === 'stickers');
+    const custom = await read('assets'); // Keep earlier browser imports usable.
+    assets.frames = [...custom.filter(item => item.kind === 'frames'), ...await read('assets-frames')];
+    assets.stickers = [...custom.filter(item => item.kind === 'stickers'), ...await read('assets-stickers')];
   }
   const ready = (async () => {
     const response = await nativeFetch(absolute('manifest.json'));
@@ -97,6 +97,39 @@ window.BrowserApp = (() => {
     const image = await loadImage(preview);
     return {ok:true, preview, name: name || blob.name || 'image.png', width:image.naturalWidth, height:image.naturalHeight};
   }
+  // Workspace folders exist only after the visitor explicitly selects a local folder.
+  // Browser-only mode remains private and works without filesystem permission.
+  const folderPath = {png:['Exports'], project:['Projects'], frames:['Assets','Frames'],
+    stickers:['Assets','Stickers'], fonts:['Assets','Fonts'], source:['Assets','Sources']};
+  async function workspaceFile(kind, name, blob) {
+    if (!outputDirectory) return false;
+    let dir = outputDirectory;
+    for (const part of folderPath[kind]) dir = await dir.getDirectoryHandle(part, {create:true});
+    const handle = await dir.getFileHandle(safeName(name), {create:true});
+    const stream = await handle.createWritable();
+    try { await stream.write(blob); await stream.close(); }
+    catch(error) {try {await stream.abort();} catch(_) {} throw error;}
+    return true;
+  }
+  async function existsInWorkspace(kind, name) {
+    if (!outputDirectory) return false;
+    let dir = outputDirectory;
+    try {
+      for (const part of folderPath[kind]) dir = await dir.getDirectoryHandle(part);
+      await dir.getFileHandle(name);
+      return true;
+    } catch(error) { if(error.name === 'NotFoundError') return false; throw error; }
+  }
+  async function flattenedPNG(blob, transparent) {
+    const image = await loadImage(await readData(blob));
+    const canvas = document.createElement('canvas');
+    canvas.width = image.naturalWidth;
+    canvas.height = image.naturalHeight;
+    const ctx = canvas.getContext('2d', {alpha:true});
+    if (!transparent) {ctx.fillStyle='#16191b';ctx.fillRect(0,0,canvas.width,canvas.height);}
+    ctx.drawImage(image,0,0);
+    return {blob:await canvasBlob(canvas),image};
+  }
   function download(blob, name) {
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement('a');
@@ -109,9 +142,7 @@ window.BrowserApp = (() => {
   }
   async function outputExists(name) {
     if (outputDirectory) {
-      try { await outputDirectory.getFileHandle(name); return true; }
-      catch (error) { if (error.name !== 'NotFoundError') throw error; }
-      return false;
+      return existsInWorkspace('png',name);
     }
     return !!await read('exports', name);
   }
@@ -142,19 +173,8 @@ window.BrowserApp = (() => {
       stem = baseStem + ' v' + version;
       filename = stem + '.png';
     }
-    let blob = original;
-    const src = await readData(original);
-    const image = await loadImage(src);
-    if (fd.get('transparent') !== 'true') {
-      const canvas = document.createElement('canvas');
-      canvas.width = image.naturalWidth;
-      canvas.height = image.naturalHeight;
-      const ctx = canvas.getContext('2d');
-      ctx.fillStyle = '#16191b';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(image, 0, 0);
-      blob = await canvasBlob(canvas);
-    }
+    // Re-encode a single RGBA bitmap; projects alone retain editable layers.
+    const {blob,image} = await flattenedPNG(original,fd.get('transparent') === 'true');
     const thumb = document.createElement('canvas');
     const scale = Math.min(1, 240 / Math.max(image.naturalWidth, image.naturalHeight));
     thumb.width = Math.max(1, Math.round(image.naturalWidth * scale));
@@ -167,16 +187,10 @@ window.BrowserApp = (() => {
       project.savedWith = 'Evidence Maker v127 Browser';
       await write('projects', {id:stem, project, thumbnail:thumb.toDataURL('image/png')});
     }
-    if (outputDirectory) {
-      const file = await outputDirectory.getFileHandle(filename, {create:true});
-      const stream = await file.createWritable();
-      try { await stream.write(blob); await stream.close(); }
-      catch (error) { try { await stream.abort(); } catch (_) {} throw error; }
-    } else {
-      download(blob, filename);
-    }
+    if (outputDirectory) await workspaceFile('png',filename,blob);
+    else download(blob,filename);
     await write('exports', {id:filename, time:Date.now()});
-    return respond({ok:true, filename, saved_to:outputDirectory ? outputDirectory.name + '/' + filename : 'Downloads/' + filename,
+    return respond({ok:true, filename, saved_to:outputDirectory ? outputDirectory.name + '/Exports/' + filename : 'Downloads/' + filename,
       raw_project_saved_to:project ? 'this browser' : null});
   }
   function validateProject(project) {
@@ -220,7 +234,7 @@ window.BrowserApp = (() => {
     for (const item of project.browserFonts || []) await write('fonts', item);
     for (const item of project.browserAssets || []) {
       if (!['frames','stickers'].includes(item.kind)) throw new Error('Invalid project asset.');
-      await write('assets', item);
+      await write(item.kind === 'frames' ? 'assets-frames' : 'assets-stickers', item);
     }
     await reloadResources();
     if (typeof loadFrames === 'function') await loadFrames(true);
@@ -264,6 +278,7 @@ window.BrowserApp = (() => {
     const face = await new FontFace('verify_'+id, await blob.arrayBuffer()).load();
     if (face.status !== 'loaded') throw new Error('The font could not be loaded.');
     await write('fonts', {id,name,custom:true,themed:true,dataUrl});
+    if(outputDirectory) await workspaceFile('fonts',name+'.font',blob);
     await reloadResources();
     return {id,name};
   }
@@ -321,7 +336,12 @@ window.BrowserApp = (() => {
       if(route==='/frames') return respond(library('frames'));
       if(route==='/stickers') return respond(library('stickers'));
       if(route==='/fonts' || route==='/fonts/refresh') {await reloadResources();return respond(fontList);}
-      if(route==='/upload') return respond(await imageUpload(body.get('file')));
+      if(route==='/upload') {
+        const file=body.get('file');const result=await imageUpload(file);
+        if(outputDirectory)await workspaceFile('source',file.name||'source.png',file);
+        else await write('assets-sources',{id:crypto.randomUUID(),name:file.name||'source.png',src:result.preview});
+        return respond(result);
+      }
       if(route==='/from-url') {
         const input=JSON.parse(body).url, remote=new URL(input);
         if(!['https:','http:'].includes(remote.protocol)) throw new Error('Use a full HTTPS image URL.');
@@ -397,8 +417,11 @@ window.BrowserApp = (() => {
       if(!imageLoaded) throw new Error('Add an image first.');
       await ensurePreviewFontReadyForSave();
       const project=await packProject(await exportProjectState());
-      download(new Blob([JSON.stringify(project)],{type:'application/json'}),safeName(project.label)+'.evidence.json');
-      message('Project backup downloaded. Keep this file to reopen your work on another device.');
+      const filename=safeName(project.label)+'.evidence.json';
+      const backup=new Blob([JSON.stringify(project)],{type:'application/json'});
+      if(outputDirectory) await workspaceFile('project',filename,backup);
+      else download(backup,filename);
+      message(outputDirectory?'Project saved to workspace Projects folder.':'Project backup downloaded. Keep this file to reopen your work on another device.');
     } catch(error) {message('ERROR: '+error.message);}
   }
   async function importProject(project, name) {
@@ -412,6 +435,7 @@ window.BrowserApp = (() => {
     while(await read('projects',finalId)) finalId=id+' imported '+version++;
     project.projectName=finalId;
     await write('projects',{id:finalId,project,thumbnail:''});
+    if(outputDirectory) await workspaceFile('project',finalId+'.evidence.json',new Blob([JSON.stringify(project)],{type:'application/json'}));
     hideProjectsPopover();
     message('Project imported: '+finalId);
   }
@@ -448,7 +472,8 @@ window.BrowserApp = (() => {
           const w=preview.width,h=preview.height;
           Object.assign(item,{photo:[Math.round(w*.14),Math.round(h*.16),Math.round(w*.88),Math.round(h*.74)],labelDefault:[.5,.88]});
         }
-        await write('assets',item);
+        await write(kind === 'frames' ? 'assets-frames' : 'assets-stickers',item);
+        if(outputDirectory) await workspaceFile(kind,file.name,file);
       }
       await reloadResources();
       if(kind==='frames') await loadFrames(true);else await loadStickers();
@@ -462,8 +487,9 @@ window.BrowserApp = (() => {
     }
     try {
       outputDirectory=await window.showDirectoryPicker({mode:'readwrite'});
+      for(const segments of Object.values(folderPath)) {let d=outputDirectory;for(const part of segments)d=await d.getDirectoryHandle(part,{create:true});}
       document.getElementById('savePath').value=outputDirectory.name;
-      message('PNGs will save to '+outputDirectory.name+' for this session.');
+      message('Workspace ready: '+outputDirectory.name+' / Projects, Exports, Assets.');
     } catch(error) {if(error.name!=='AbortError')message('Could not use that folder: '+error.message);}
   }
   function installUI() {
@@ -472,13 +498,16 @@ window.BrowserApp = (() => {
       const button=document.createElement('button');button.className='smallBtn';
       button.textContent='Import Desktop Folder';button.onclick=importDesktopFolder;
       footer.appendChild(button);
+      const hint=document.createElement('span');hint.textContent='Local to this device';hint.style.cssText='font-size:11px;opacity:.75';footer.appendChild(hint);
     }
     const help=document.querySelector('#helpModal .modalBox');
     if(help){
       const note=document.createElement('p');
-      note.textContent='Browser edition: saved projects live on this device. Export Project downloads a self-contained backup. Import Project reopens it. Import Desktop Folder reads v42 RAW PROJECTS, including its SOURCES folder. PNGs download normally, or use Choose Folder in supporting browsers. Some image hosts block direct URL loading; upload the downloaded file instead.';
+      note.textContent='Browser edition: saved projects live on this device. Export Project downloads a self-contained backup. Import Project reopens it. Import Desktop Folder reads v42 RAW PROJECTS, including its SOURCES folder. PNGs are single flattened images. Choose Workspace Folder to organize private Projects, Exports, and Assets in local folders; without it, imports remain in this browser and exports download normally. Some image hosts block direct URL loading; upload the downloaded file instead.';
       help.appendChild(note);
     }
+    const choose=document.querySelector('[onclick="BrowserApp.chooseDirectory()"]');
+    if(choose)choose.textContent='Choose Workspace Folder';
     const conflict=document.getElementById('saveConflictModal');
     if(conflict){
       const note=document.createElement('p');note.style.cssText='font-size:11px;color:#aebbc1';
