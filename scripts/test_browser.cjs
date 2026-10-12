@@ -20,6 +20,7 @@ const assert = require('assert');
  assert.strictEqual(await page.evaluate(()=>stickerLibrary.length),58);
  await page.locator('#file').setInputFiles('logo_app.png');
  await page.waitForFunction(()=>document.getElementById('status').textContent.startsWith('Image loaded'),null,{timeout:15000});
+ await page.waitForFunction(()=>mainLabelEnabledV78 && mainLabelExistsV77 && namePreview.style.display!=='none');
  await page.evaluate(()=>{toggleMainLabelV78(null,true);const el=document.getElementById('label');el.value='BROWSER TEST';el.dispatchEvent(new Event('input',{bubbles:true}));});
  // Retain shape-editing and sticker layers from the reference editor.
  await page.evaluate(()=>{setBgShape('circle'); if(bgBoxAutoFitEnabled)toggleBgAutoFit(); bgBoxRot=17; bgBoxW=.8; syncBgBox(); addStickerInstance(0);});
