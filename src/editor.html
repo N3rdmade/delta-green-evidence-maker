@@ -2073,6 +2073,7 @@ function showFrameInPreview(frame,initial=false){
     finishWorkspaceStartupV105();
     status('ERROR: Could not load frame image');
   };
+  frameImg.crossOrigin='anonymous';
   frameImg.src=frameDisplayUrlV105(frame.file);
 }
 function previewFrame(id){
@@ -4351,7 +4352,7 @@ function renderStickerLibrary(){
     }else{
       folderLabel='Main Stickers';
     }
-    card.innerHTML=`<div class="stickerThumb"><img src="${stickerAssetUrl(st.file)}" alt=""></div><div class="stickerName">${escapeHtml(st.name)}</div><div class="stickerCardPath">${escapeHtml(folderLabel)}</div>`;
+    card.innerHTML=`<div class="stickerThumb"><img crossorigin="anonymous" src="${stickerAssetUrl(st.file)}" alt=""></div><div class="stickerName">${escapeHtml(st.name)}</div><div class="stickerCardPath">${escapeHtml(folderLabel)}</div>`;
     card.title=(st.file||st.name)+' — drag onto the photo to add';
     card.addEventListener('click',()=>status('Drag and drop this sticker onto the photo to add it'));
     card.addEventListener('dragstart',e=>{ dragStickerIndex=idx; try{e.dataTransfer.setData('text/plain','sticker:'+idx); e.dataTransfer.effectAllowed='copy';}catch(err){}; card.classList.add('dragging'); });
@@ -4588,6 +4589,7 @@ function addStickerInstanceFromMeta(meta,opts={}){
   let img=document.createElement('img');
   img.className='stickerNode';
   img.draggable=false;
+  img.crossOrigin='anonymous';
   img.src=(meta.src||(stickerAssetUrl(meta.file)+'?v='+Date.now()));
   let startX=typeof opts.x==='number'?opts.x:0.5;
   let startY=typeof opts.y==='number'?opts.y:0.5;
