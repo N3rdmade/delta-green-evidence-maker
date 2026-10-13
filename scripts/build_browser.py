@@ -65,7 +65,7 @@ for item in frame_library["frames"]:
     item["name"] = re.sub(r"\\s+", " ", item["name"])
 
 
-manifest = {"version": "v132-browser", "frames": frame_library,
+manifest = {"version": "v133-browser", "frames": frame_library,
             "stickers": namespace["build_sticker_library"](), "fonts": fonts,
             "styles": namespace["STYLE_SEEDS"], "fallbacks": namespace["STYLE_FALLBACKS"],
             "categories": namespace["DIRECT_CATEGORIES"]}
@@ -89,7 +89,7 @@ shutil.copy2(ROOT / "browser/adapter.js", OUT / "adapter.js")
 (OUT / ".nojekyll").touch()
 
 html = (ROOT / "src/editor.html").read_text()
-html = html.replace("<script>", '<script src="adapter.js?v=132"></script>\n<script>', 1)
+html = html.replace("<script>", '<script src="adapter.js?v=133"></script>\n<script>', 1)
 html = html.replace('src="/asset/logo_app.png"', 'src="logo_app.png"')
 html = html.replace("fetch('/", "BrowserApp.api('/")
 html = html.replace("return '/frame/'+String(file||'').split('/').map(part=>encodeURIComponent(part)).join('/');",
@@ -145,7 +145,7 @@ html = html.replace('onclick="chooseFolder()">Browse', 'onclick="BrowserApp.choo
 html = re.sub(r'<div class="projectHint">.*?</div>',
               '<div class="projectHint">Editable projects stay in this browser on this device. Use <b>Export Project</b> for a portable backup. Clearing site data removes browser saves.</div>', html, count=1)
 html = html.replace('<b>RAW PROJECTS</b>', '<b>this browser</b>')
-html = html.replace('Perfect for DELTA GREEN and other investigative games', 'v132 • Browser edition • Projects stay on this device')
+html = html.replace('Perfect for DELTA GREEN and other investigative games', 'v133 • Browser edition • Projects stay on this device')
 # v127's cut rebuild can complete synchronously when a sticker has no cuts.
 # Two sticker-load callbacks incorrectly assumed the return was always a Promise.
 html = html.replace("rebuildCutAssetsForTarget({kind:'sticker',index:i,node:st.node,st}).then(",
