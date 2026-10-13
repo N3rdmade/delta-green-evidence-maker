@@ -11,6 +11,12 @@ const assert = require('assert');
 
  page.on('pageerror',e=>errors.push(e.message));
  page.on('response',r=>{if(r.status()>=400&&r.url().startsWith('http://127.0.0.1'))failed.push(r.status()+' '+r.url());});
+ // The editor now fetches public images from Cloudflare R2. CI doesn't require
+ // external network: mock only the image responses with a real bundled WebP.
+ const fixture=fs.readFileSync('_site/frames/Polaroids/Double_Polaroid_Collage.webp');
+ await page.route('https://pub-eff3becc93094ca7b1ea1bd412827b55.r2.dev/**',
+   route=>route.fulfill({status:200,contentType:'image/webp',
+     headers:{'Access-Control-Allow-Origin':'*'},body:fixture}));
  await page.goto(process.env.EVIDENCE_TEST_URL || 'http://127.0.0.1:8765/');
  await page.waitForFunction(()=>document.getElementById('status').textContent==='Ready');
  // Saving from the browser must never use the obsolete desktop folder actions.
