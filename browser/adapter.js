@@ -93,8 +93,8 @@ window.BrowserApp = (() => {
     if(custom)return custom.src;
     const local = absolute(kind + '/' + String(file).split('/').map(encodeURIComponent).join('/'));
     // Built-in assets are public. Privately imported images never leave the browser.
-    // Preserve local serving in development and tests; use R2 on GitHub Pages.
-    if(location.hostname !== 'n3rdmade.github.io' || !manifest?.r2PublicBase) return local;
+    // Fetch published assets from R2 on all origins; tests stub requests.
+    if(!manifest?.r2PublicBase) return local;
     const item = manifest[kind]?.[kind]?.find(x=>x.file===file);
     if(!item?.remoteFile) return local;
     const path = String(item.remoteFile).split('/').map(encodeURIComponent).join('/');
