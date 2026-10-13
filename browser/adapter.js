@@ -212,7 +212,7 @@ window.BrowserApp = (() => {
       throw new Error('This is not an Evidence Maker project.');
     }
     if (project.sourceRef && !project.sourceDataUrl) {
-      throw new Error('This desktop project references a separate source image. Use Import Desktop Folder and select its RAW PROJECTS folder.');
+      throw new Error('This project references a missing source image. Import a self-contained Evidence Maker project backup instead.');
     }
     // Imported files must not turn into network requests or executable URLs.
     const checkImage = value => { if (value && !/^data:image\/(png|jpeg|webp|gif|bmp);base64,/i.test(value)) throw new Error('Project contains an unsupported image reference.'); };
@@ -330,7 +330,7 @@ window.BrowserApp = (() => {
       const url=new URL(path,'https://local.invalid');
       const route=url.pathname, body=options.body;
       // v127 merges image layers in the editor. Keep their PNGs local to the
-      // browser instead of depending on the desktop-only Python cache server.
+      // browser without a server.
       if(route==='/merge-cache-info') return respond({ok:true,count:(await read('merge-cache')).length,bytes:0});
       if(route==='/clear-merge-cache') {
         const saved=await read('merge-cache');
@@ -410,7 +410,7 @@ window.BrowserApp = (() => {
         for(const entry of list) await addFont(entry.blob,entry.name.replace(/\.[^.]+$/,'').replaceAll('_',' '));
         return respond({ok:true,count:list.length});
       }
-      throw new Error('This desktop-only action is unavailable in the browser edition.');
+      throw new Error('This action is not supported by the web editor.');
     } catch(error) {
       console.warn('Evidence Maker:',error.message);
       return respond({ok:false,error:error.message},400);
@@ -457,23 +457,6 @@ window.BrowserApp = (() => {
     selectFiles({accept:'.json'},async files=>{
       if(!files.length)return;
       await importProject(JSON.parse(await files[0].text()),files[0].name);
-    });
-  }
-  function importDesktopFolder() {
-    selectFiles({directory:true,multiple:true},async files=>{
-      const projects=files.filter(f=>f.name==='project.json');
-      if(!projects.length)throw new Error('Select RAW PROJECTS or a folder containing project.json.');
-      for(const file of projects){
-        const project=JSON.parse(await file.text());
-        if(project.sourceRef&&!project.sourceDataUrl){
-          const filename=String(project.sourceRef).replaceAll('\\','/').split('/').pop();
-          const image=files.find(f=>f.name===filename);
-          if(!image)throw new Error('Missing source image '+filename+'. Select the full RAW PROJECTS folder.');
-          project.sourceDataUrl=await readData(image);
-        }
-        await importProject(project,file.webkitRelativePath);
-      }
-      message('Imported '+projects.length+' desktop project(s). Last imported project is open.');
     });
   }
   function importAssets(kind) {
@@ -678,7 +661,7 @@ window.BrowserApp = (() => {
     const help=document.querySelector('#helpModal .modalBox');
     if(help){
       const note=document.createElement('p');
-      note.textContent='Browser edition: saved projects live on this device. Export Project downloads a self-contained backup. Import Project reopens it. Import Desktop Folder reads v42 RAW PROJECTS, including its SOURCES folder. PNGs are single flattened images. Choose Workspace Folder to organize private Projects, Exports, and Assets in local folders; without it, imports remain in this browser and exports download normally. Some image hosts block direct URL loading; upload the downloaded file instead.';
+      note.textContent='Browser edition: saved projects live on this device. Export Project downloads a self-contained backup. Import Project reopens it. PNGs are single flattened images. Choose Workspace Folder to organize private Projects, Exports, and Assets in local folders; without it, imports remain in this browser and exports download normally. Some image hosts block direct URL loading; upload the downloaded file instead.';
       help.appendChild(note);
     }
     const choose=document.querySelector('[onclick="BrowserApp.chooseDirectory()"]');
@@ -691,5 +674,5 @@ window.BrowserApp = (() => {
     }
   }
   return {api,ready,asset,fontUrl,thumbnail:id=>thumbnails.get(id)||'',packProject,restoreResources,markDirty,saveRecovery,backupAllToWorkspace,
-    exportProjectFile,importProjectFiles,importDesktopFolder,importAssets,chooseDirectory,useDownloads,installUI};
+    exportProjectFile,importProjectFiles,importAssets,chooseDirectory,useDownloads,installUI};
 })();
