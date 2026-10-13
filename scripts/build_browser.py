@@ -56,51 +56,46 @@ for path in sorted((ROOT / "custom_fonts").glob("*")):
     fonts.append(dict(id=hashlib.sha1(path.name.encode()).hexdigest()[:14],
                       name=name, custom=False, themed=True,
                       url="custom_fonts/" + path.name))
-# Categories and subcategories are derived only from physical folders,
-# exactly like the sticker library. No category-name rules to maintain.
-frame_library = namespace["build_frame_library"]()
-# Display human-readable titles even when filenames carry ordering prefixes.
-for item in frame_library["frames"]:
+# The public catalog is independent of GitHub's binary artwork files.
+# New R2 uploads can be added to remote_assets.json without committing images.
+remote = json.loads((ROOT / "remote_assets.json").read_text(encoding="utf-8"))
+local = namespace["build_frame_library"]()  # Temporary evidence ZIP artwork.
+frame_entries = remote["frames"] + [
+    f for f in local["frames"] if f["id"] not in {x["id"] for x in remote["frames"]}
+]
+for item in frame_entries:
     item["name"] = re.sub(r"^\\d+[\\s._-]+", "", item["name"]).strip()
-    item["name"] = re.sub(r"\\s+", " ", item["name"])
-
-
-# Only route assets we know exist in the R2 upload; the evidence pack remains
-# served locally until it is uploaded with matching paths.
+frame_library = {"frames":frame_entries, "categories":[], "root_count":0}
+sticker_library = {"stickers":remote["stickers"], "categories":[], "root_count":0}
+for lib, kind in ((frame_library,"frames"),(sticker_library,"stickers")):
+    cats = {}
+    for item in lib[kind]:
+        cat=item.get("category") or ""
+        if not cat:
+            lib["root_count"] += 1
+            continue
+        subs=cats.setdefault(cat,set())
+        if item.get("subcategory"):
+            parts=item["subcategory"].split("/")
+            subs.update("/".join(parts[:i]) for i in range(1,len(parts)+1))
+    lib["categories"]=[{"name":c,"subcategories":sorted(subs)} for c,subs in sorted(cats.items())]
 R2_PUBLIC = "https://pub-eff3becc93094ca7b1ea1bd412827b55.r2.dev"
-original_names = {Path(f["file"]).name for f in meta}
-for entry in frame_library["frames"]:
-    basename = Path(entry["file"]).name
-    if basename in original_names:
-        entry["remoteFile"] = basename  # Existing R2 upload uses flat frames/ paths.
-sticker_library = namespace["build_sticker_library"]()
-for entry in sticker_library["stickers"]:
-    entry["remoteFile"] = entry["file"]
-manifest = {"version": "v134-r2", "r2PublicBase": R2_PUBLIC, "frames": frame_library,
+manifest = {"version": "v135-r2", "r2PublicBase": R2_PUBLIC, "frames": frame_library,
             "stickers": sticker_library, "fonts": fonts,
             "styles": namespace["STYLE_SEEDS"], "fallbacks": namespace["STYLE_FALLBACKS"],
             "categories": namespace["DIRECT_CATEGORIES"]}
 OUT.mkdir(exist_ok=True)
-for folder in ("frames", "stickers", "custom_fonts"):
-    shutil.copytree(ROOT / folder, OUT / folder, dirs_exist_ok=True)
-# Keep the previous flat file URLs accessible for old saved projects,
-# but do not add aliases to the manifest or duplicate picker entries.
-for old in meta:
-    basename = Path(old["file"]).name
-    target = OUT / "frames" / basename
-    if target.exists():
-        continue
-    matching = list((ROOT / "frames").rglob(basename))
-    if len(matching) == 1:
-        shutil.copy2(matching[0], target)
-
+# Artwork binaries live in R2. Only the temporary evidence ZIP is served locally.
+for folder in ("frames", "custom_fonts"):
+    if (ROOT / folder).is_dir():
+        shutil.copytree(ROOT / folder, OUT / folder, dirs_exist_ok=True)
 shutil.copy2(ROOT / "logo_app.png", OUT / "logo_app.png")
 shutil.copy2(ROOT / "browser/adapter.js", OUT / "adapter.js")
 (OUT / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False), encoding="utf-8")
 (OUT / ".nojekyll").touch()
 
 html = (ROOT / "src/editor.html").read_text()
-html = html.replace("<script>", '<script src="adapter.js?v=134"></script>\n<script>', 1)
+html = html.replace("<script>", '<script src="adapter.js?v=135"></script>\n<script>', 1)
 html = html.replace('src="/asset/logo_app.png"', 'src="logo_app.png"')
 html = html.replace("fetch('/", "BrowserApp.api('/")
 html = html.replace("return '/frame/'+String(file||'').split('/').map(part=>encodeURIComponent(part)).join('/');",
