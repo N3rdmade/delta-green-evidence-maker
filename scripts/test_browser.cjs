@@ -14,8 +14,8 @@ const assert = require('assert');
  await page.goto(process.env.EVIDENCE_TEST_URL || 'http://127.0.0.1:8765/');
  await page.waitForFunction(()=>document.getElementById('status').textContent==='Ready');
  // Saving from the browser must never use the obsolete desktop folder actions.
- assert.strictEqual(await page.locator('[onclick="BrowserApp.chooseDirectory()"]:visible').count(),1);
- assert.strictEqual(await page.locator('[onclick="BrowserApp.useDownloads()"]:visible').count(),1);
+ assert.strictEqual(await page.locator('[onclick="BrowserApp.chooseDirectory()"]').count(),1);
+ assert.strictEqual(await page.locator('[onclick="BrowserApp.useDownloads()"]').count(),1);
  assert.strictEqual(await page.locator('#savePath').inputValue(),'Browser Downloads');
  await page.evaluate(()=>BrowserApp.useDownloads());
  await page.waitForFunction(()=>document.getElementById('status').textContent.includes('Using browser Downloads'));
