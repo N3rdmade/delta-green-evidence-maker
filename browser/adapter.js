@@ -653,9 +653,6 @@ window.BrowserApp = (() => {
     checkpointTimer=setInterval(()=>{if(autosaveDirty&&!autosaveBusy)void saveRecovery();},45000);
     ready.then(()=>setTimeout(()=>{void recoveryPrompt();},1800)).catch(console.warn);
     if(footer){
-      const button=document.createElement('button');button.className='smallBtn';
-      button.textContent='Import Desktop Folder';button.onclick=importDesktopFolder;
-      footer.appendChild(button);
       const hint=document.createElement('span');hint.textContent='Local to this device';hint.style.cssText='font-size:11px;opacity:.75';footer.appendChild(hint);
     }
     const help=document.querySelector('#helpModal .modalBox');
