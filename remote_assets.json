@@ -1,0 +1,1122 @@
+{
+  "frames": [
+    {
+      "id": "burned",
+      "name": "Burned",
+      "file": "Damaged & Weathered/07_Burned.png",
+      "photo": [
+        178,
+        236,
+        956,
+        1040
+      ],
+      "labelDefault": [
+        0.5,
+        0.8838
+      ],
+      "category": "Damaged & Weathered",
+      "subcategory": "",
+      "remoteFile": "07_Burned.png"
+    },
+    {
+      "id": "blood",
+      "name": "Blood Splatter",
+      "file": "Damaged & Weathered/12_Blood_Splatter.png",
+      "photo": [
+        160,
+        233,
+        964,
+        1046
+      ],
+      "labelDefault": [
+        0.5,
+        0.8857
+      ],
+      "category": "Damaged & Weathered",
+      "subcategory": "",
+      "remoteFile": "12_Blood_Splatter.png"
+    },
+    {
+      "id": "kiss",
+      "name": "Lipstick Kiss",
+      "file": "Damaged & Weathered/13_Lipstick_Kiss.png",
+      "photo": [
+        166,
+        173,
+        960,
+        1018
+      ],
+      "labelDefault": [
+        0.5,
+        0.8767
+      ],
+      "category": "Damaged & Weathered",
+      "subcategory": "",
+      "remoteFile": "13_Lipstick_Kiss.png"
+    },
+    {
+      "id": "termite",
+      "name": "Termite Damage",
+      "file": "Damaged & Weathered/16_Termite_Damage.png",
+      "photo": [
+        159,
+        201,
+        966,
+        1032
+      ],
+      "labelDefault": [
+        0.5,
+        0.8812
+      ],
+      "category": "Damaged & Weathered",
+      "subcategory": "",
+      "remoteFile": "16_Termite_Damage.png"
+    },
+    {
+      "id": "frozen_clip",
+      "name": "Frozen Clip",
+      "file": "Damaged & Weathered/22_Frozen_Clip.png",
+      "photo": [
+        163,
+        295,
+        936,
+        1104
+      ],
+      "labelDefault": [
+        0.5,
+        0.9002
+      ],
+      "category": "Damaged & Weathered",
+      "subcategory": "",
+      "remoteFile": "22_Frozen_Clip.png"
+    },
+    {
+      "id": "ooze_tooth",
+      "name": "Ooze Tooth",
+      "file": "Damaged & Weathered/23_Ooze_Tooth.png",
+      "photo": [
+        162,
+        266,
+        928,
+        1116
+      ],
+      "labelDefault": [
+        0.5,
+        0.9037
+      ],
+      "category": "Damaged & Weathered",
+      "subcategory": "",
+      "remoteFile": "23_Ooze_Tooth.png"
+    },
+    {
+      "id": "alien_glyphs",
+      "name": "Alien Glyphs",
+      "file": "Damaged & Weathered/24_Alien_Glyphs.png",
+      "photo": [
+        154,
+        289,
+        964,
+        1081
+      ],
+      "labelDefault": [
+        0.5,
+        0.9038
+      ],
+      "category": "Damaged & Weathered",
+      "subcategory": "",
+      "remoteFile": "24_Alien_Glyphs.png"
+    },
+    {
+      "id": "dirt_caked",
+      "name": "Dirt Caked",
+      "file": "Damaged & Weathered/25_Dirt_Caked.png",
+      "photo": [
+        160,
+        274,
+        938,
+        1084
+      ],
+      "labelDefault": [
+        0.5,
+        0.8944
+      ],
+      "category": "Damaged & Weathered",
+      "subcategory": "",
+      "remoteFile": "25_Dirt_Caked.png"
+    },
+    {
+      "id": "paint_spatter",
+      "name": "Paint Spatter",
+      "file": "Damaged & Weathered/26_Paint_Spatter.png",
+      "photo": [
+        156,
+        209,
+        938,
+        1077
+      ],
+      "labelDefault": [
+        0.5,
+        0.8924
+      ],
+      "category": "Damaged & Weathered",
+      "subcategory": "",
+      "remoteFile": "26_Paint_Spatter.png"
+    },
+    {
+      "id": "water_damaged",
+      "name": "Water Damaged",
+      "file": "Damaged & Weathered/27_Water_Damaged.png",
+      "photo": [
+        158,
+        240,
+        934,
+        1077
+      ],
+      "labelDefault": [
+        0.5,
+        0.8924
+      ],
+      "category": "Damaged & Weathered",
+      "subcategory": "",
+      "remoteFile": "27_Water_Damaged.png"
+    },
+    {
+      "id": "moldy",
+      "name": "Moldy",
+      "file": "Damaged & Weathered/28_Moldy.png",
+      "photo": [
+        160,
+        269,
+        943,
+        1062
+      ],
+      "labelDefault": [
+        0.5,
+        0.888
+      ],
+      "category": "Damaged & Weathered",
+      "subcategory": "",
+      "remoteFile": "28_Moldy.png"
+    },
+    {
+      "id": "cracked",
+      "name": "Cracked",
+      "file": "Damaged & Weathered/29_Cracked.png",
+      "photo": [
+        143,
+        241,
+        947,
+        1078
+      ],
+      "labelDefault": [
+        0.5,
+        0.8927
+      ],
+      "category": "Damaged & Weathered",
+      "subcategory": "",
+      "remoteFile": "29_Cracked.png"
+    },
+    {
+      "id": "wax_drip",
+      "name": "Wax Drip",
+      "file": "Damaged & Weathered/30_Wax_Drip.png",
+      "photo": [
+        176,
+        260,
+        944,
+        1082
+      ],
+      "labelDefault": [
+        0.5,
+        0.8938
+      ],
+      "category": "Damaged & Weathered",
+      "subcategory": "",
+      "remoteFile": "30_Wax_Drip.png"
+    },
+    {
+      "id": "damaged-weathered-34-ink-stained-png",
+      "name": "34 Ink Stained",
+      "file": "Damaged & Weathered/34_Ink_Stained.png",
+      "category": "Damaged & Weathered",
+      "subcategory": "",
+      "remoteFile": "34_Ink_Stained.png"
+    },
+    {
+      "id": "stamped",
+      "name": "Stamped",
+      "file": "Evidence Files/06_Stamped.png",
+      "photo": [
+        133,
+        216,
+        992,
+        1032
+      ],
+      "labelDefault": [
+        0.5,
+        0.8812
+      ],
+      "category": "Evidence Files",
+      "subcategory": "",
+      "remoteFile": "06_Stamped.png"
+    },
+    {
+      "id": "fingerprint",
+      "name": "Fingerprint",
+      "file": "Evidence Files/14_Fingerprint.png",
+      "photo": [
+        155,
+        164,
+        971,
+        1060
+      ],
+      "labelDefault": [
+        0.5,
+        0.8902
+      ],
+      "category": "Evidence Files",
+      "subcategory": "",
+      "remoteFile": "14_Fingerprint.png"
+    },
+    {
+      "id": "casefile",
+      "name": "Case File",
+      "file": "Evidence Files/15_Case_File.png",
+      "photo": [
+        186,
+        255,
+        948,
+        1135
+      ],
+      "labelDefault": [
+        0.5,
+        0.9143
+      ],
+      "category": "Evidence Files",
+      "subcategory": "",
+      "remoteFile": "15_Case_File.png"
+    },
+    {
+      "id": "tag",
+      "name": "Evidence Tag",
+      "file": "Evidence Files/18_Evidence_Tag.png",
+      "photo": [
+        193,
+        267,
+        931,
+        1056
+      ],
+      "labelDefault": [
+        0.5,
+        0.8889
+      ],
+      "category": "Evidence Files",
+      "subcategory": "",
+      "remoteFile": "18_Evidence_Tag.png"
+    },
+    {
+      "id": "evidence-files-31-id-badge-png",
+      "name": "31 ID Badge",
+      "file": "Evidence Files/31_ID_Badge.png",
+      "category": "Evidence Files",
+      "subcategory": "",
+      "remoteFile": "31_ID_Badge.png"
+    },
+    {
+      "id": "evidence-files-32-id-2-badge-png",
+      "name": "32 ID 2 Badge",
+      "file": "Evidence Files/32_ID 2_Badge.png",
+      "category": "Evidence Files",
+      "subcategory": "",
+      "remoteFile": "32_ID 2_Badge.png"
+    },
+    {
+      "id": "evidence-files-33-id-3-badge-png",
+      "name": "33 ID 3 Badge",
+      "file": "Evidence Files/33_ID 3_Badge.png",
+      "category": "Evidence Files",
+      "subcategory": "",
+      "remoteFile": "33_ID 3_Badge.png"
+    },
+    {
+      "id": "paperclip",
+      "name": "Paperclip",
+      "file": "Notes & Journals/02_Paperclip.png",
+      "photo": [
+        179,
+        294,
+        941,
+        1002
+      ],
+      "labelDefault": [
+        0.5,
+        0.8716
+      ],
+      "category": "Notes & Journals",
+      "subcategory": "",
+      "remoteFile": "02_Paperclip.png"
+    },
+    {
+      "id": "folded",
+      "name": "Folded",
+      "file": "Notes & Journals/08_Folded.png",
+      "photo": [
+        176,
+        289,
+        968,
+        1066
+      ],
+      "labelDefault": [
+        0.5,
+        0.8922
+      ],
+      "category": "Notes & Journals",
+      "subcategory": "",
+      "remoteFile": "08_Folded.png"
+    },
+    {
+      "id": "filecard",
+      "name": "File Card",
+      "file": "Notes & Journals/09_File_Card.png",
+      "photo": [
+        147,
+        205,
+        974,
+        1005
+      ],
+      "labelDefault": [
+        0.5,
+        0.8726
+      ],
+      "category": "Notes & Journals",
+      "subcategory": "",
+      "remoteFile": "09_File_Card.png"
+    },
+    {
+      "id": "pinned",
+      "name": "Pinned Note",
+      "file": "Notes & Journals/17_Pinned_Note.png",
+      "photo": [
+        192,
+        264,
+        971,
+        1077
+      ],
+      "labelDefault": [
+        0.5,
+        0.8957
+      ],
+      "category": "Notes & Journals",
+      "subcategory": "",
+      "remoteFile": "17_Pinned_Note.png"
+    },
+    {
+      "id": "stapled_torn",
+      "name": "Stapled Torn",
+      "file": "Notes & Journals/20_Stapled_Torn.png",
+      "photo": [
+        145,
+        192,
+        943,
+        1086
+      ],
+      "labelDefault": [
+        0.5,
+        0.895
+      ],
+      "category": "Notes & Journals",
+      "subcategory": "",
+      "remoteFile": "20_Stapled_Torn.png"
+    },
+    {
+      "id": "nail",
+      "name": "Nail",
+      "file": "Photo Frames/03_Nail.png",
+      "photo": [
+        160,
+        273,
+        962,
+        1051
+      ],
+      "labelDefault": [
+        0.5,
+        0.8873
+      ],
+      "category": "Photo Frames",
+      "subcategory": "",
+      "remoteFile": "03_Nail.png"
+    },
+    {
+      "id": "brass",
+      "name": "Brass Tack",
+      "file": "Photo Frames/04_Brass_Tack.png",
+      "photo": [
+        148,
+        255,
+        977,
+        1037
+      ],
+      "labelDefault": [
+        0.5,
+        0.8828
+      ],
+      "category": "Photo Frames",
+      "subcategory": "",
+      "remoteFile": "04_Brass_Tack.png"
+    },
+    {
+      "id": "tape",
+      "name": "Tape",
+      "file": "Photo Frames/10_Tape.png",
+      "photo": [
+        155,
+        255,
+        971,
+        1075
+      ],
+      "labelDefault": [
+        0.5,
+        0.895
+      ],
+      "category": "Photo Frames",
+      "subcategory": "",
+      "remoteFile": "10_Tape.png"
+    },
+    {
+      "id": "gum",
+      "name": "Gum",
+      "file": "Photo Frames/11_Gum.png",
+      "photo": [
+        144,
+        232,
+        980,
+        1063
+      ],
+      "labelDefault": [
+        0.5,
+        0.8912
+      ],
+      "category": "Photo Frames",
+      "subcategory": "",
+      "remoteFile": "11_Gum.png"
+    },
+    {
+      "id": "red_dart",
+      "name": "Red Dart",
+      "file": "Photo Frames/21_Red_Dart.png",
+      "photo": [
+        164,
+        343,
+        923,
+        1110
+      ],
+      "labelDefault": [
+        0.5,
+        0.902
+      ],
+      "category": "Photo Frames",
+      "subcategory": "",
+      "remoteFile": "21_Red_Dart.png"
+    },
+    {
+      "id": "original",
+      "name": "Original",
+      "file": "Polaroids/01_Original.png",
+      "photo": [
+        154,
+        222,
+        972,
+        1031
+      ],
+      "labelDefault": [
+        0.5,
+        0.8809
+      ],
+      "category": "Polaroids",
+      "subcategory": "",
+      "remoteFile": "01_Original.png"
+    },
+    {
+      "id": "film",
+      "name": "Film",
+      "file": "Polaroids/05_Film.png",
+      "photo": [
+        165,
+        303,
+        973,
+        1084
+      ],
+      "labelDefault": [
+        0.5,
+        0.8979
+      ],
+      "category": "Polaroids",
+      "subcategory": "",
+      "remoteFile": "05_Film.png"
+    },
+    {
+      "id": "modern_rainbow",
+      "name": "Modern Rainbow",
+      "file": "Polaroids/19_Modern_Rainbow.png",
+      "photo": [
+        143,
+        294,
+        945,
+        1102
+      ],
+      "labelDefault": [
+        0.5,
+        0.8996
+      ],
+      "category": "Polaroids",
+      "subcategory": "",
+      "remoteFile": "19_Modern_Rainbow.png"
+    },
+    {
+      "id": "polaroids-35-aquatic-polaroid-png",
+      "name": "35 Aquatic polaroid",
+      "file": "Polaroids/35_Aquatic_polaroid.png",
+      "category": "Polaroids",
+      "subcategory": "",
+      "remoteFile": "35_Aquatic_polaroid.png"
+    },
+    {
+      "id": "polaroids-36-aztec-polaroid-png",
+      "name": "36 Aztec polaroid",
+      "file": "Polaroids/36_Aztec_polaroid.png",
+      "category": "Polaroids",
+      "subcategory": "",
+      "remoteFile": "36_Aztec_polaroid.png"
+    },
+    {
+      "id": "polaroids-37-distressed-polaroid-png",
+      "name": "37 Distressed polaroid",
+      "file": "Polaroids/37_Distressed_polaroid.png",
+      "category": "Polaroids",
+      "subcategory": "",
+      "remoteFile": "37_Distressed_polaroid.png"
+    },
+    {
+      "id": "polaroids-38-ethereal-polaroid-png",
+      "name": "38 Ethereal polaroid",
+      "file": "Polaroids/38_Ethereal_polaroid.png",
+      "category": "Polaroids",
+      "subcategory": "",
+      "remoteFile": "38_Ethereal_polaroid.png"
+    },
+    {
+      "id": "polaroids-39-native-american-polaroid-png",
+      "name": "39 Native American polaroid",
+      "file": "Polaroids/39_Native_American_polaroid.png",
+      "category": "Polaroids",
+      "subcategory": "",
+      "remoteFile": "39_Native_American_polaroid.png"
+    },
+    {
+      "id": "polaroids-40-norse-mountain-polaroid-png",
+      "name": "40 Norse Mountain polaroid",
+      "file": "Polaroids/40_Norse_Mountain_polaroid.png",
+      "category": "Polaroids",
+      "subcategory": "",
+      "remoteFile": "40_Norse_Mountain_polaroid.png"
+    },
+    {
+      "id": "polaroids-41-norse-raven-polaroid-png",
+      "name": "41 Norse Raven polaroid",
+      "file": "Polaroids/41_Norse_Raven_polaroid.png",
+      "category": "Polaroids",
+      "subcategory": "",
+      "remoteFile": "41_Norse_Raven_polaroid.png"
+    },
+    {
+      "id": "polaroids-42-safari-polaroid-png",
+      "name": "42 Safari polaroid",
+      "file": "Polaroids/42_Safari_polaroid.png",
+      "category": "Polaroids",
+      "subcategory": "",
+      "remoteFile": "42_Safari_polaroid.png"
+    },
+    {
+      "id": "polaroids-43-snake-polaroid-png",
+      "name": "43 Snake polaroid",
+      "file": "Polaroids/43_Snake_polaroid.png",
+      "category": "Polaroids",
+      "subcategory": "",
+      "remoteFile": "43_Snake_polaroid.png"
+    },
+    {
+      "id": "polaroids-44-woodgrain-polaroid-png",
+      "name": "44 Woodgrain polaroid",
+      "file": "Polaroids/44_Woodgrain_polaroid.png",
+      "category": "Polaroids",
+      "subcategory": "",
+      "remoteFile": "44_Woodgrain_polaroid.png"
+    }
+  ],
+  "stickers": [
+    {
+      "id": "blood-blood-dripping-png",
+      "name": "Blood Dripping",
+      "file": "Blood/Blood Dripping.png",
+      "category": "Blood",
+      "subcategory": "",
+      "remoteFile": "Blood/Blood Dripping.png"
+    },
+    {
+      "id": "blood-blood-hand-smear-png",
+      "name": "Blood Hand Smear",
+      "file": "Blood/Blood Hand Smear.png",
+      "category": "Blood",
+      "subcategory": "",
+      "remoteFile": "Blood/Blood Hand Smear.png"
+    },
+    {
+      "id": "blood-blood-handprint-png",
+      "name": "Blood Handprint",
+      "file": "Blood/Blood Handprint.png",
+      "category": "Blood",
+      "subcategory": "",
+      "remoteFile": "Blood/Blood Handprint.png"
+    },
+    {
+      "id": "blood-blood-jab-png",
+      "name": "Blood Jab",
+      "file": "Blood/Blood Jab.png",
+      "category": "Blood",
+      "subcategory": "",
+      "remoteFile": "Blood/Blood Jab.png"
+    },
+    {
+      "id": "blood-blood-smear-png",
+      "name": "Blood Smear",
+      "file": "Blood/Blood Smear.png",
+      "category": "Blood",
+      "subcategory": "",
+      "remoteFile": "Blood/Blood Smear.png"
+    },
+    {
+      "id": "blood-blood-splat-png",
+      "name": "Blood Splat",
+      "file": "Blood/Blood Splat.png",
+      "category": "Blood",
+      "subcategory": "",
+      "remoteFile": "Blood/Blood Splat.png"
+    },
+    {
+      "id": "blood-blood-splatter-png",
+      "name": "Blood Splatter",
+      "file": "Blood/Blood Splatter.png",
+      "category": "Blood",
+      "subcategory": "",
+      "remoteFile": "Blood/Blood Splatter.png"
+    },
+    {
+      "id": "bullet-holes-concrete-concrete-bullet-1-png",
+      "name": "Concrete Bullet 1",
+      "file": "Bullet Holes/Concrete/Concrete Bullet 1.png",
+      "category": "Bullet Holes",
+      "subcategory": "Concrete",
+      "remoteFile": "Bullet Holes/Concrete/Concrete Bullet 1.png"
+    },
+    {
+      "id": "bullet-holes-concrete-concrete-bullet-2-png",
+      "name": "Concrete Bullet 2",
+      "file": "Bullet Holes/Concrete/Concrete Bullet 2.png",
+      "category": "Bullet Holes",
+      "subcategory": "Concrete",
+      "remoteFile": "Bullet Holes/Concrete/Concrete Bullet 2.png"
+    },
+    {
+      "id": "bullet-holes-concrete-concrete-bullet-3-png",
+      "name": "Concrete Bullet 3",
+      "file": "Bullet Holes/Concrete/Concrete Bullet 3.png",
+      "category": "Bullet Holes",
+      "subcategory": "Concrete",
+      "remoteFile": "Bullet Holes/Concrete/Concrete Bullet 3.png"
+    },
+    {
+      "id": "bullet-holes-concrete-concrete-bullet-4-png",
+      "name": "Concrete Bullet 4",
+      "file": "Bullet Holes/Concrete/Concrete Bullet 4.png",
+      "category": "Bullet Holes",
+      "subcategory": "Concrete",
+      "remoteFile": "Bullet Holes/Concrete/Concrete Bullet 4.png"
+    },
+    {
+      "id": "bullet-holes-glass-glass-bullet-1-png",
+      "name": "Glass Bullet 1",
+      "file": "Bullet Holes/Glass/Glass Bullet 1.png",
+      "category": "Bullet Holes",
+      "subcategory": "Glass",
+      "remoteFile": "Bullet Holes/Glass/Glass Bullet 1.png"
+    },
+    {
+      "id": "bullet-holes-glass-glass-bullet-2-png",
+      "name": "Glass Bullet 2",
+      "file": "Bullet Holes/Glass/Glass Bullet 2.png",
+      "category": "Bullet Holes",
+      "subcategory": "Glass",
+      "remoteFile": "Bullet Holes/Glass/Glass Bullet 2.png"
+    },
+    {
+      "id": "bullet-holes-glass-glass-bullet-3-png",
+      "name": "Glass Bullet 3",
+      "file": "Bullet Holes/Glass/Glass Bullet 3.png",
+      "category": "Bullet Holes",
+      "subcategory": "Glass",
+      "remoteFile": "Bullet Holes/Glass/Glass Bullet 3.png"
+    },
+    {
+      "id": "bullet-holes-glass-glass-bullet-4-png",
+      "name": "Glass Bullet 4",
+      "file": "Bullet Holes/Glass/Glass Bullet 4.png",
+      "category": "Bullet Holes",
+      "subcategory": "Glass",
+      "remoteFile": "Bullet Holes/Glass/Glass Bullet 4.png"
+    },
+    {
+      "id": "bullet-holes-metal-metal-bullet-1-png",
+      "name": "Metal Bullet 1",
+      "file": "Bullet Holes/Metal/Metal Bullet 1.png",
+      "category": "Bullet Holes",
+      "subcategory": "Metal",
+      "remoteFile": "Bullet Holes/Metal/Metal Bullet 1.png"
+    },
+    {
+      "id": "bullet-holes-metal-metal-bullet-2-png",
+      "name": "Metal Bullet 2",
+      "file": "Bullet Holes/Metal/Metal Bullet 2.png",
+      "category": "Bullet Holes",
+      "subcategory": "Metal",
+      "remoteFile": "Bullet Holes/Metal/Metal Bullet 2.png"
+    },
+    {
+      "id": "bullet-holes-metal-metal-bullet-3-png",
+      "name": "Metal Bullet 3",
+      "file": "Bullet Holes/Metal/Metal Bullet 3.png",
+      "category": "Bullet Holes",
+      "subcategory": "Metal",
+      "remoteFile": "Bullet Holes/Metal/Metal Bullet 3.png"
+    },
+    {
+      "id": "bullet-holes-metal-metal-bullet-4-png",
+      "name": "Metal Bullet 4",
+      "file": "Bullet Holes/Metal/Metal Bullet 4.png",
+      "category": "Bullet Holes",
+      "subcategory": "Metal",
+      "remoteFile": "Bullet Holes/Metal/Metal Bullet 4.png"
+    },
+    {
+      "id": "bullet-holes-paper-paper-bullet-1-png",
+      "name": "Paper Bullet 1",
+      "file": "Bullet Holes/Paper/Paper Bullet 1.png",
+      "category": "Bullet Holes",
+      "subcategory": "Paper",
+      "remoteFile": "Bullet Holes/Paper/Paper Bullet 1.png"
+    },
+    {
+      "id": "bullet-holes-paper-paper-bullet-2-png",
+      "name": "Paper Bullet 2",
+      "file": "Bullet Holes/Paper/Paper Bullet 2.png",
+      "category": "Bullet Holes",
+      "subcategory": "Paper",
+      "remoteFile": "Bullet Holes/Paper/Paper Bullet 2.png"
+    },
+    {
+      "id": "bullet-holes-paper-paper-bullet-3-png",
+      "name": "Paper Bullet 3",
+      "file": "Bullet Holes/Paper/Paper Bullet 3.png",
+      "category": "Bullet Holes",
+      "subcategory": "Paper",
+      "remoteFile": "Bullet Holes/Paper/Paper Bullet 3.png"
+    },
+    {
+      "id": "bullet-holes-paper-paper-bullet-4-png",
+      "name": "Paper Bullet 4",
+      "file": "Bullet Holes/Paper/Paper Bullet 4.png",
+      "category": "Bullet Holes",
+      "subcategory": "Paper",
+      "remoteFile": "Bullet Holes/Paper/Paper Bullet 4.png"
+    },
+    {
+      "id": "bullet-holes-wood-wood-bullet-1-png",
+      "name": "Wood Bullet 1",
+      "file": "Bullet Holes/Wood/Wood Bullet 1.png",
+      "category": "Bullet Holes",
+      "subcategory": "Wood",
+      "remoteFile": "Bullet Holes/Wood/Wood Bullet 1.png"
+    },
+    {
+      "id": "bullet-holes-wood-wood-bullet-2-png",
+      "name": "Wood Bullet 2",
+      "file": "Bullet Holes/Wood/Wood Bullet 2.png",
+      "category": "Bullet Holes",
+      "subcategory": "Wood",
+      "remoteFile": "Bullet Holes/Wood/Wood Bullet 2.png"
+    },
+    {
+      "id": "bullet-holes-wood-wood-bullet-3-png",
+      "name": "Wood Bullet 3",
+      "file": "Bullet Holes/Wood/Wood Bullet 3.png",
+      "category": "Bullet Holes",
+      "subcategory": "Wood",
+      "remoteFile": "Bullet Holes/Wood/Wood Bullet 3.png"
+    },
+    {
+      "id": "bullet-holes-wood-wood-bullet-4-png",
+      "name": "Wood Bullet 4",
+      "file": "Bullet Holes/Wood/Wood Bullet 4.png",
+      "category": "Bullet Holes",
+      "subcategory": "Wood",
+      "remoteFile": "Bullet Holes/Wood/Wood Bullet 4.png"
+    },
+    {
+      "id": "characters-agent-2-png",
+      "name": "Agent 2",
+      "file": "Characters/Agent 2.png",
+      "category": "Characters",
+      "subcategory": "",
+      "remoteFile": "Characters/Agent 2.png"
+    },
+    {
+      "id": "characters-delta-green-snow-agent-1-png",
+      "name": "Delta Green Snow Agent 1",
+      "file": "Characters/Delta Green Snow Agent 1.png",
+      "category": "Characters",
+      "subcategory": "",
+      "remoteFile": "Characters/Delta Green Snow Agent 1.png"
+    },
+    {
+      "id": "characters-test-1-png",
+      "name": "Test 1",
+      "file": "Characters/Test 1.png",
+      "category": "Characters",
+      "subcategory": "",
+      "remoteFile": "Characters/Test 1.png"
+    },
+    {
+      "id": "ink-ink-dripping-png",
+      "name": "Ink Dripping",
+      "file": "Ink/Ink Dripping.png",
+      "category": "Ink",
+      "subcategory": "",
+      "remoteFile": "Ink/Ink Dripping.png"
+    },
+    {
+      "id": "ink-ink-hand-smear-png",
+      "name": "Ink Hand Smear",
+      "file": "Ink/Ink Hand Smear.png",
+      "category": "Ink",
+      "subcategory": "",
+      "remoteFile": "Ink/Ink Hand Smear.png"
+    },
+    {
+      "id": "ink-ink-handprint-png",
+      "name": "Ink Handprint",
+      "file": "Ink/Ink Handprint.png",
+      "category": "Ink",
+      "subcategory": "",
+      "remoteFile": "Ink/Ink Handprint.png"
+    },
+    {
+      "id": "ink-ink-jab-png",
+      "name": "Ink Jab",
+      "file": "Ink/Ink Jab.png",
+      "category": "Ink",
+      "subcategory": "",
+      "remoteFile": "Ink/Ink Jab.png"
+    },
+    {
+      "id": "ink-ink-smear-png",
+      "name": "Ink Smear",
+      "file": "Ink/Ink Smear.png",
+      "category": "Ink",
+      "subcategory": "",
+      "remoteFile": "Ink/Ink Smear.png"
+    },
+    {
+      "id": "ink-ink-splat-png",
+      "name": "Ink Splat",
+      "file": "Ink/Ink Splat.png",
+      "category": "Ink",
+      "subcategory": "",
+      "remoteFile": "Ink/Ink Splat.png"
+    },
+    {
+      "id": "ink-ink-splatter-1-png",
+      "name": "Ink splatter 1",
+      "file": "Ink/Ink splatter 1.png",
+      "category": "Ink",
+      "subcategory": "",
+      "remoteFile": "Ink/Ink splatter 1.png"
+    },
+    {
+      "id": "stamps-01-deceased-stamp-png",
+      "name": "01 Deceased Stamp",
+      "file": "Stamps/01_Deceased_Stamp.png",
+      "category": "Stamps",
+      "subcategory": "",
+      "remoteFile": "Stamps/01_Deceased_Stamp.png"
+    },
+    {
+      "id": "stamps-02-classified-stamp-png",
+      "name": "02 Classified Stamp",
+      "file": "Stamps/02_Classified_Stamp.png",
+      "category": "Stamps",
+      "subcategory": "",
+      "remoteFile": "Stamps/02_Classified_Stamp.png"
+    },
+    {
+      "id": "stamps-03-confidential-stamp-png",
+      "name": "03 Confidential Stamp",
+      "file": "Stamps/03_Confidential_Stamp.png",
+      "category": "Stamps",
+      "subcategory": "",
+      "remoteFile": "Stamps/03_Confidential_Stamp.png"
+    },
+    {
+      "id": "stamps-04-delta-green-stamp-png",
+      "name": "04 Delta Green Stamp",
+      "file": "Stamps/04_Delta_Green_Stamp.png",
+      "category": "Stamps",
+      "subcategory": "",
+      "remoteFile": "Stamps/04_Delta_Green_Stamp.png"
+    },
+    {
+      "id": "stamps-05-eyes-only-stamp-png",
+      "name": "05 Eyes Only Stamp",
+      "file": "Stamps/05_Eyes_Only_Stamp.png",
+      "category": "Stamps",
+      "subcategory": "",
+      "remoteFile": "Stamps/05_Eyes_Only_Stamp.png"
+    },
+    {
+      "id": "stamps-06-for-official-use-only-stamp-png",
+      "name": "06 For Official Use Only Stamp",
+      "file": "Stamps/06_For_Official_Use_Only_Stamp.png",
+      "category": "Stamps",
+      "subcategory": "",
+      "remoteFile": "Stamps/06_For_Official_Use_Only_Stamp.png"
+    },
+    {
+      "id": "stamps-07-restricted-stamp-png",
+      "name": "07 Restricted Stamp",
+      "file": "Stamps/07_Restricted_Stamp.png",
+      "category": "Stamps",
+      "subcategory": "",
+      "remoteFile": "Stamps/07_Restricted_Stamp.png"
+    },
+    {
+      "id": "stamps-08-secret-stamp-png",
+      "name": "08 Secret Stamp",
+      "file": "Stamps/08_Secret_Stamp.png",
+      "category": "Stamps",
+      "subcategory": "",
+      "remoteFile": "Stamps/08_Secret_Stamp.png"
+    },
+    {
+      "id": "stamps-09-top-secret-stamp-png",
+      "name": "09 Top Secret Stamp",
+      "file": "Stamps/09_Top_Secret_Stamp.png",
+      "category": "Stamps",
+      "subcategory": "",
+      "remoteFile": "Stamps/09_Top_Secret_Stamp.png"
+    },
+    {
+      "id": "symbols-alien-alien-1-png",
+      "name": "Alien 1",
+      "file": "Symbols/Alien/Alien 1.png",
+      "category": "Symbols",
+      "subcategory": "Alien",
+      "remoteFile": "Symbols/Alien/Alien 1.png"
+    },
+    {
+      "id": "symbols-alien-alien-2-png",
+      "name": "Alien 2",
+      "file": "Symbols/Alien/Alien 2.png",
+      "category": "Symbols",
+      "subcategory": "Alien",
+      "remoteFile": "Symbols/Alien/Alien 2.png"
+    },
+    {
+      "id": "symbols-alien-alien-3-png",
+      "name": "Alien 3",
+      "file": "Symbols/Alien/Alien 3.png",
+      "category": "Symbols",
+      "subcategory": "Alien",
+      "remoteFile": "Symbols/Alien/Alien 3.png"
+    },
+    {
+      "id": "symbols-alien-alien-4-png",
+      "name": "Alien 4",
+      "file": "Symbols/Alien/Alien 4.png",
+      "category": "Symbols",
+      "subcategory": "Alien",
+      "remoteFile": "Symbols/Alien/Alien 4.png"
+    },
+    {
+      "id": "symbols-cross-outs-01-grungy-black-brushstroke-x-png",
+      "name": "01 Grungy Black Brushstroke X",
+      "file": "Symbols/Cross Outs/01_Grungy_Black_Brushstroke_X.png",
+      "category": "Symbols",
+      "subcategory": "Cross Outs",
+      "remoteFile": "Symbols/Cross Outs/01_Grungy_Black_Brushstroke_X.png"
+    },
+    {
+      "id": "symbols-cross-outs-02-futuristic-gunmetal-x-emblem-png",
+      "name": "02 Futuristic Gunmetal X Emblem",
+      "file": "Symbols/Cross Outs/02_Futuristic_Gunmetal_X_Emblem.png",
+      "category": "Symbols",
+      "subcategory": "Cross Outs",
+      "remoteFile": "Symbols/Cross Outs/02_Futuristic_Gunmetal_X_Emblem.png"
+    },
+    {
+      "id": "symbols-cross-outs-03-distressed-white-chalk-x-png",
+      "name": "03 Distressed White Chalk X",
+      "file": "Symbols/Cross Outs/03_Distressed_White_Chalk_X.png",
+      "category": "Symbols",
+      "subcategory": "Cross Outs",
+      "remoteFile": "Symbols/Cross Outs/03_Distressed_White_Chalk_X.png"
+    },
+    {
+      "id": "symbols-cross-outs-04-distressed-industrial-x-emblem-png",
+      "name": "04 Distressed Industrial X Emblem",
+      "file": "Symbols/Cross Outs/04_Distressed_Industrial_X_Emblem.png",
+      "category": "Symbols",
+      "subcategory": "Cross Outs",
+      "remoteFile": "Symbols/Cross Outs/04_Distressed_Industrial_X_Emblem.png"
+    },
+    {
+      "id": "symbols-withcraft-symbol-1-png",
+      "name": "Symbol 1",
+      "file": "Symbols/Withcraft/Symbol 1.png",
+      "category": "Symbols",
+      "subcategory": "Withcraft",
+      "remoteFile": "Symbols/Withcraft/Symbol 1.png"
+    },
+    {
+      "id": "symbols-withcraft-symbol-2-png",
+      "name": "Symbol 2",
+      "file": "Symbols/Withcraft/Symbol 2.png",
+      "category": "Symbols",
+      "subcategory": "Withcraft",
+      "remoteFile": "Symbols/Withcraft/Symbol 2.png"
+    },
+    {
+      "id": "symbols-withcraft-symbol-3-png",
+      "name": "Symbol 3",
+      "file": "Symbols/Withcraft/Symbol 3.png",
+      "category": "Symbols",
+      "subcategory": "Withcraft",
+      "remoteFile": "Symbols/Withcraft/Symbol 3.png"
+    },
+    {
+      "id": "symbols-withcraft-symbol-4-png",
+      "name": "Symbol 4",
+      "file": "Symbols/Withcraft/Symbol 4.png",
+      "category": "Symbols",
+      "subcategory": "Withcraft",
+      "remoteFile": "Symbols/Withcraft/Symbol 4.png"
+    }
+  ]
+}
