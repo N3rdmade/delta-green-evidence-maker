@@ -90,7 +90,15 @@ window.BrowserApp = (() => {
 
   function asset(kind, file) {
     const custom = assets[kind].find(item => item.file === file);
-    return custom ? custom.src : absolute(kind + '/' + String(file).split('/').map(encodeURIComponent).join('/'));
+    if(custom)return custom.src;
+    const local = absolute(kind + '/' + String(file).split('/').map(encodeURIComponent).join('/'));
+    // Built-in assets are public. Privately imported images never leave the browser.
+    // Preserve local serving in development and tests; use R2 on GitHub Pages.
+    if(location.hostname !== 'n3rdmade.github.io' || !manifest?.r2PublicBase) return local;
+    const item = manifest[kind]?.[kind]?.find(x=>x.file===file);
+    if(!item?.remoteFile) return local;
+    const path = String(item.remoteFile).split('/').map(encodeURIComponent).join('/');
+    return manifest.r2PublicBase.replace(/\\/$/,'') + '/' + kind + '/' + path;
   }
   function fontUrl(id) {
     const font = fontList.find(item => item.id === id) || fontList[0];
