@@ -1425,7 +1425,7 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.18;ba
       <input id="filename" class="saveBox" value="UNKNOWN.png" readonly>
       <div style="height:10px"></div>
       <div class="caption">Save Location</div>
-      <div class="saveGrid"><input id="savePath" class="saveBox" readonly><button class="smallBtn" onclick="chooseFolder()">Browse</button><button class="smallBtn" onclick="resetSaveFolder()">Default</button></div><div class="projectHint" style="margin-top:6px">Default follows this app folder automatically: <b>SAVED IMAGES</b>. Custom locations are stored per PC.</div>
+      <div class="saveGrid"><input id="savePath" class="saveBox" readonly value="Browser Downloads"><button class="smallBtn" type="button" onclick="BrowserApp.chooseDirectory()">Choose Workspace Folder</button><button class="smallBtn" type="button" onclick="BrowserApp.useDownloads()">Use Downloads</button></div><div class="projectHint" style="margin-top:6px">Choose a workspace folder on your computer to save PNG images into <b>Exports/</b> and editable projects into <b>Projects/</b>. Without a workspace, PNGs use browser Downloads and projects stay in this browser. A website cannot write to folders without your permission.</div>
       <div class="checks" style="margin-top:12px"><label><input id="autoName" type="checkbox" checked oninput="autoNameChanged()"> Auto-name file using label text</label></div>
       <div class="checks" style="margin-top:8px"><label><input id="transparent" type="checkbox" checked> Save as PNG with transparency (recommended)</label></div>
       <div class="checks" style="margin-top:8px"><label><input id="saveRawProject" type="checkbox"> Also save editable project</label></div>
