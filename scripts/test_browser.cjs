@@ -150,7 +150,7 @@ const assert = require('assert');
   try{await BrowserApp.restoreResources({type:'evidence-photo-project',sourceRef:'SOURCES/missing.png'});return '';}
   catch(e){return e.message;}
  });
- assert(bad.includes('Import Desktop Folder'));
+ assert(bad.includes('self-contained Evidence Maker project backup'));
  assert.deepStrictEqual(errors,[]);
  assert.deepStrictEqual(failed,[]);
  console.log('PASS: startup, 65 categorized frames, 58 stickers, upload, shape/sticker editing, PNG export, persistence/reopen, conflict/version, opaque export, portable project import, invalid desktop source error.');
