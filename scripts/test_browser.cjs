@@ -138,6 +138,9 @@ const assert = require('assert');
  await page.screenshot({path:'test-results/editor.png',fullPage:true});
  // A different browser profile can restore the portable file.
  const fresh=await browser.newContext({viewport:{width:1600,height:1000},acceptDownloads:true});
+ await fresh.route('https://pub-eff3becc93094ca7b1ea1bd412827b55.r2.dev/**',
+   route=>route.fulfill({status:200,contentType:'image/webp',
+     headers:{'Access-Control-Allow-Origin':'*'},body:fixture}));
  const other=await fresh.newPage();
  other.on('pageerror',e=>errors.push(e.message));
  await other.goto(process.env.EVIDENCE_TEST_URL || 'http://127.0.0.1:8765/');
