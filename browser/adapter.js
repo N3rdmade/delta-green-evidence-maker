@@ -76,10 +76,14 @@ window.BrowserApp = (() => {
     db = await openDatabase();
     await reloadResources();
     // The directory handle can be stored, but permission is not assumed on restart.
+    const mode=await read('settings','workspace-mode');
     const saved=await read('settings','workspace-handle');
-    if(saved?.handle && typeof saved.handle.queryPermission==='function') {
+    if(mode?.mode!=='downloads' && saved?.handle && typeof saved.handle.queryPermission==='function') {
       try {if(await saved.handle.queryPermission({mode:'readwrite'})==='granted')outputDirectory=saved.handle;}catch(_){}
+      if(outputDirectory)syncSaveDestination();
+      else showWorkspaceReconnectHint();
     }
+    syncSaveDestination();
   })();
   // init() reports startup errors; keep the eagerly started promise handled.
   ready.catch(error => message(error.message));
@@ -490,6 +494,23 @@ window.BrowserApp = (() => {
       message('Imported '+files.length+' '+kind+'.'+(kind==='frames'?' Adjust the image window to fit your custom frame.':''));
     });
   }
+  function syncSaveDestination(){
+    const field=document.getElementById('savePath');
+    if(field)field.value=outputDirectory ? outputDirectory.name+' / Exports' : 'Browser Downloads';
+  }
+  function showWorkspaceReconnectHint(){
+    const node=document.getElementById('workspaceRestoreHint');
+    if(node)node.textContent='Previously selected workspace needs access again. Choose Workspace Folder to reconnect.';
+  }
+  async function useDownloads(){
+    await ready;
+    outputDirectory=null;
+    // Explicit Downloads selection persists without discarding the remembered
+    // directory handle (user may choose it again later).
+    await write('settings',{id:'workspace-mode',mode:'downloads'});
+    syncSaveDestination();
+    message('Using browser Downloads for PNGs; projects are saved in this browser.');
+  }
   async function chooseDirectory() {
     if(!window.showDirectoryPicker){
       message('This browser uses Downloads. Choose the download location in your browser settings.');
@@ -497,11 +518,11 @@ window.BrowserApp = (() => {
     }
     try {
       outputDirectory=await window.showDirectoryPicker({mode:'readwrite'});
+      await write('settings',{id:'workspace-mode',mode:'workspace'});
       try {await write('settings',{id:'workspace-handle',handle:outputDirectory});}catch(error){console.warn('Cannot remember workspace handle:',error);}
       for(const segments of Object.values(folderPath)) {let d=outputDirectory;for(const part of segments)d=await d.getDirectoryHandle(part,{create:true});}
-      document.getElementById('savePath').value=outputDirectory.name;
-      message('Workspace ready: '+outputDirectory.name+' / Projects, Exports, Assets, Backups.');
-      if(document.getElementById('savePath'))document.getElementById('savePath').value=outputDirectory.name;
+      syncSaveDestination();
+      message('Workspace ready: '+outputDirectory.name+' / Exports for PNGs, Projects for editable projects.');
       await backupAllToWorkspace();
     } catch(error) {if(error.name!=='AbortError')message('Could not use that folder: '+error.message);}
   }
@@ -670,5 +691,5 @@ window.BrowserApp = (() => {
     }
   }
   return {api,ready,asset,fontUrl,thumbnail:id=>thumbnails.get(id)||'',packProject,restoreResources,markDirty,saveRecovery,backupAllToWorkspace,
-    exportProjectFile,importProjectFiles,importDesktopFolder,importAssets,chooseDirectory,installUI};
+    exportProjectFile,importProjectFiles,importDesktopFolder,importAssets,chooseDirectory,useDownloads,installUI};
 })();
