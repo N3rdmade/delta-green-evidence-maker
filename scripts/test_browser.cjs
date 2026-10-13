@@ -103,7 +103,7 @@ const assert = require('assert');
  assert.strictEqual(project.stickers.length,1);
  assert(project.browserFonts.length>0);
  await page.reload();
- await page.waitForFunction(()=>document.getElementById('status').textContent==='Ready');
+ await page.waitForFunction(()=>document.getElementById('frameImg').naturalWidth>0, null, {timeout:30000});
  await page.locator('#projectsTopBtn').click();
  await page.locator('.projectCard').click();
  console.log('REOPEN clicked', await page.evaluate(() => ({status:document.getElementById('status').textContent, projectsOpen:projectsPopoverOpen, count:document.querySelectorAll('.projectCard').length})));
