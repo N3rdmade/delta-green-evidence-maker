@@ -65,7 +65,7 @@ for item in frame_library["frames"]:
     item["name"] = re.sub(r"\\s+", " ", item["name"])
 
 
-manifest = {"version": "v131.1-browser", "frames": frame_library,
+manifest = {"version": "v132-browser", "frames": frame_library,
             "stickers": namespace["build_sticker_library"](), "fonts": fonts,
             "styles": namespace["STYLE_SEEDS"], "fallbacks": namespace["STYLE_FALLBACKS"],
             "categories": namespace["DIRECT_CATEGORIES"]}
@@ -89,7 +89,7 @@ shutil.copy2(ROOT / "browser/adapter.js", OUT / "adapter.js")
 (OUT / ".nojekyll").touch()
 
 html = (ROOT / "src/editor.html").read_text()
-html = html.replace("<script>", '<script src="adapter.js?v=131.1"></script>\n<script>', 1)
+html = html.replace("<script>", '<script src="adapter.js?v=132"></script>\n<script>', 1)
 html = html.replace('src="/asset/logo_app.png"', 'src="logo_app.png"')
 html = html.replace("fetch('/", "BrowserApp.api('/")
 html = html.replace("return '/frame/'+String(file||'').split('/').map(part=>encodeURIComponent(part)).join('/');",
@@ -140,11 +140,12 @@ html = html.replace("No Windows fonts were detected.", "No bundled fonts were fo
 html = html.replace("System Fonts", "Bundled Fonts").replace(" — Windows Font", " — Bundled Font")
 html = html.replace('<div class="fontName">${f.name}</div>', '<div class="fontName">${escapeHtml(f.name)}</div>')
 html = html.replace('id="saveRawProject" type="checkbox"', 'id="saveRawProject" type="checkbox" checked')
-html = html.replace('id="savePath" class="saveBox" readonly', 'id="savePath" class="saveBox" readonly value="Browser Downloads"')
+# Save panel is authored in src/editor.html; don't duplicate its value attribute.
+html = html.replace('onclick="chooseFolder()">Browse', 'onclick="BrowserApp.chooseDirectory()">Choose Workspace Folder')
 html = re.sub(r'<div class="projectHint">.*?</div>',
               '<div class="projectHint">Editable projects stay in this browser on this device. Use <b>Export Project</b> for a portable backup. Clearing site data removes browser saves.</div>', html, count=1)
 html = html.replace('<b>RAW PROJECTS</b>', '<b>this browser</b>')
-html = html.replace('Perfect for DELTA GREEN and other investigative games', 'v130 • Browser edition • Projects stay on this device')
+html = html.replace('Perfect for DELTA GREEN and other investigative games', 'v132 • Browser edition • Projects stay on this device')
 # v127's cut rebuild can complete synchronously when a sticker has no cuts.
 # Two sticker-load callbacks incorrectly assumed the return was always a Promise.
 html = html.replace("rebuildCutAssetsForTarget({kind:'sticker',index:i,node:st.node,st}).then(",
