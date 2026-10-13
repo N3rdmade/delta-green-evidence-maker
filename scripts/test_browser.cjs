@@ -18,7 +18,7 @@ const assert = require('assert');
    route=>route.fulfill({status:200,contentType:'image/webp',
      headers:{'Access-Control-Allow-Origin':'*'},body:fixture}));
  await page.goto(process.env.EVIDENCE_TEST_URL || 'http://127.0.0.1:8765/');
- await page.waitForFunction(()=>document.getElementById('status').textContent==='Ready');
+ await page.waitForFunction(()=>document.getElementById('frameImg').naturalWidth>0, null, {timeout:30000});
  // Saving from the browser must never use the obsolete desktop folder actions.
  assert.strictEqual(await page.locator('[onclick="BrowserApp.chooseDirectory()"]').count(),1);
  assert.strictEqual(await page.locator('[onclick="BrowserApp.useDownloads()"]').count(),1);
@@ -141,7 +141,7 @@ const assert = require('assert');
  const other=await fresh.newPage();
  other.on('pageerror',e=>errors.push(e.message));
  await other.goto(process.env.EVIDENCE_TEST_URL || 'http://127.0.0.1:8765/');
- await other.waitForFunction(()=>document.getElementById('status').textContent==='Ready');
+ await other.waitForFunction(()=>document.getElementById('frameImg').naturalWidth>0, null, {timeout:30000});
  await other.locator('#projectsTopBtn').click();
  const picker=other.waitForEvent('filechooser');
  await other.getByRole('button',{name:'Import Project',exact:true}).click();
