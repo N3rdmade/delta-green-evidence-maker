@@ -13,6 +13,15 @@ const assert = require('assert');
  page.on('response',r=>{if(r.status()>=400&&r.url().startsWith('http://127.0.0.1'))failed.push(r.status()+' '+r.url());});
  await page.goto(process.env.EVIDENCE_TEST_URL || 'http://127.0.0.1:8765/');
  await page.waitForFunction(()=>document.getElementById('status').textContent==='Ready');
+ // Saving from the browser must never use the obsolete desktop folder actions.
+ assert.strictEqual(await page.locator('[onclick="BrowserApp.chooseDirectory()"]:visible').count(),1);
+ assert.strictEqual(await page.locator('[onclick="BrowserApp.useDownloads()"]:visible').count(),1);
+ assert.strictEqual(await page.locator('#savePath').inputValue(),'Browser Downloads');
+ await page.evaluate(()=>BrowserApp.useDownloads());
+ await page.waitForFunction(()=>document.getElementById('status').textContent.includes('Using browser Downloads'));
+ assert.ok(!(await page.locator('#status').textContent()).includes('desktop-only'));
+ assert.strictEqual(await page.locator('#savePath').inputValue(),'Browser Downloads');
+
  await page.waitForFunction(()=>document.getElementById('frameImg').naturalWidth>0);
  await page.evaluate(()=>document.fonts.ready);
  assert.strictEqual(await page.evaluate(()=>frameList.length),65);
